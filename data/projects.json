@@ -1,0 +1,120 @@
+[
+  {
+    "id": "muro-divisorio",
+    "year": 2024,
+    "category": "Industrial",
+    "title": "Muro divisorio con estructura metálica – PCM Corrugados",
+    "subtitle": "Muro divisorio en nave de corrugados PCM",
+    "gallery": [
+      "muro-divisorio1.png",
+      "muro-divisorio2.png",
+      "muro-divisorio3.png",
+      "muro-divisorio4.png"
+    ],
+    "alt": "Muro divisorio en nave de corrugados PCM",
+    "description": "Construcción de muro divisorio con estructura metálica en nave planta de corrugados de PCM (Papeles y Conversiones de México), en el Parque Industrial FINSA II, El Marqués, Querétaro.",
+    "client": "PCM – Papeles y Conversiones de México",
+    "amount": "1,907,670.07"
+  },
+  {
+    "id": "andenes-carga",
+    "year": 2024,
+    "category": "Industrial",
+    "title": "Andenes de carga y descarga – PCM Corrugados",
+    "subtitle": "Andenes de carga y descarga PCM",
+    "gallery": [
+      "andenes-carga1.png",
+      "andenes-carga2.png",
+      "andenes-carga3.png",
+      "andenes-carga4.png"
+    ],
+    "alt": "Andenes de carga y descarga PCM",
+    "description": "Construcción de andenes de carga y descarga en planta de corrugados PCM, Parque Industrial FINSA II, El Marqués, Querétaro.",
+    "client": "PCM – Papeles y Conversiones de México",
+    "amount": "1,283,579.09"
+  },
+  {
+    "id": "luminarias",
+    "year": 2023,
+    "category": "Instalaciones eléctricas",
+    "title": "Mantenimiento e instalación de luminarias",
+    "subtitle": "Mantenimiento e instalación de luminarias en Querétaro",
+    "gallery": ["luminarias.png"],
+    "alt": "Mantenimiento e instalación de luminarias en Querétaro",
+    "description": "Servicio de mantenimiento, suministro e instalación de luminarias en Ciprés I, Ciprés III, Ciprés IV y Secretaría de Seguridad Pública Municipal del Municipio de Querétaro.",
+    "client": "Municipio de Querétaro",
+    "amount": "6,223,837.73"
+  },
+  {
+    "id": "contra-incendios",
+    "year": 2023,
+    "category": "Seguridad / Sistemas",
+    "title": "Sistema de detección de humos y contra incendios",
+    "subtitle": "Sistema de detección de humos y contra incendios",
+    "gallery": ["contra-incendios.png"],
+    "alt": "Sistema de detección de humos y contra incendios",
+    "description": "Servicios correctivos al sistema de detección de humos y contra incendios de la Secretaría de Seguridad Pública Municipal de Querétaro.",
+    "client": "Municipio de Querétaro",
+    "amount": "1,276,391.27"
+  },
+  {
+    "id": "mantenimientos-diversos",
+    "year": 2023,
+    "category": "Mantenimiento general",
+    "title": "Diversos mantenimientos a instalaciones municipales",
+    "subtitle": "Diversos mantenimientos en instalaciones municipales",
+    "gallery": ["mantenimientos-diversos.png"],
+    "alt": "Diversos mantenimientos en instalaciones municipales",
+    "description": "Ejecución de diversos trabajos de mantenimiento para el Municipio de Querétaro.",
+    "client": "Municipio de Querétaro",
+    "amount": "778,424.33"
+  },
+  {
+    "id": "oficina-pasaportes",
+    "year": 2021,
+    "category": "Remodelación",
+    "title": "Rehabilitación y adecuación de oficina de pasaportes",
+    "subtitle": "Oficina municipal de enlace pasaportes",
+    "gallery": ["oficina-pasaportes.png"],
+    "alt": "Oficina municipal de enlace pasaportes",
+    "description": "Servicio de rehabilitación y adecuación de la oficina municipal de enlace de pasaportes en Centro Cívico Querétaro.",
+    "client": "Municipio de Querétaro",
+    "amount": "1,025,029.64"
+  },
+  {
+    "id": "campo-tiro",
+    "year": 2021,
+    "category": "Mantenimiento general",
+    "title": "Mantenimiento integral – Edificio Campo de Tiro",
+    "subtitle": "Mantenimiento integral al edificio del Campo de Tiro",
+    "gallery": [],
+    "alt": "Mantenimiento integral al edificio del Campo de Tiro",
+    "description": "Servicio de mantenimiento integral y conservación de las instalaciones del edificio del Campo de Tiro del Municipio de Querétaro.",
+    "client": "Municipio de Querétaro",
+    "amount": "161,227.43"
+  },
+  {
+    "id": "impermeabilizacion-ferrocarril",
+    "year": 2021,
+    "category": "Impermeabilización",
+    "title": "Impermeabilización antigua estación del ferrocarril",
+    "subtitle": "Impermeabilización antigua estación del ferrocarril",
+    "gallery": [],
+    "alt": "Impermeabilización antigua estación del ferrocarril",
+    "description": "Impermeabilización en zona de descarga del segundo nivel a base de acrílico con malla en la antigua estación del ferrocarril, Municipio de Querétaro.",
+    "client": "Municipio de Querétaro",
+    "amount": "261,628.14"
+  },
+  {
+    "id": "transformadores-centro-civico",
+    "year": 2020,
+    "category": "Instalaciones eléctricas",
+    "title": "Mantenimiento a transformadores y subestaciones – Centro Cívico",
+    "subtitle": "Mantenimiento a transformadores y subestaciones en Centro Cívico Querétaro",
+    "gallery": [],
+    "alt": "Mantenimiento a transformadores y subestaciones en Centro Cívico Querétaro",
+    "description": "Servicio de mantenimiento a transformadores, subestaciones, generador de emergencia, transformadores secos y banco de capacitores en el Centro Cívico de Querétaro, Secretaría de Administración.",
+    "client": "Municipio de Querétaro",
+    "amount": "569,154.14"
+  }
+]

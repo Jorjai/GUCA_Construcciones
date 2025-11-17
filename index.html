@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>GUCA Construcciones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="GUCA Construcciones - Construcción y remodelación profesional para proyectos residenciales y comerciales." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script defer src="js_files/main.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+</head>
+<body>
+  <header>
+    <div class="container nav-bar">
+      <div class="logo">
+        <img src="assets/logo-placeholder.png" alt="Logo Construcciones GUCA" />
+        <div class="logo-title">GUCA Construcciones</div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#services">Servicios</a></li>
+          <li><a href="#projects">Proyectos</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </nav>
+        <button id="theme-toggle" class="btn btn-outline" aria-label="Cambiar tema">🌙</button>
+    </div>
+  </header>
+
+  <main>
+      <!-- Galería destacada al inicio (vacía, JS la llenará) -->
+      <section class="hero-gallery" aria-label="Galería destacada de obras">
+          <div class="hero-gallery-inner" id="hero-gallery"></div>
+      </section>
+      <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1>Construcción sólida, resultados que duran.</h1>
+          <p>
+            En <strong>GUCA Construcciones</strong> somos una empresa especializada en obra civil y mantenimiento industrial y en edificaciones;
+              urbanización, instalaciones hidráulicas, sanitarias y pluviales así como construcción de infraestructura pública y privada.
+
+          </p>
+
+          <div class="hero-cta">
+            <a href="#contact" class="btn btn-primary">Solicitar cotización</a>
+            <a href="#projects" class="btn btn-outline">Ver proyectos</a>
+          </div>
+
+          <div class="hero-highlights">
+            <div class="hero-highlight">
+              <strong>+10 años de experiencia</strong>
+              Proyectos residenciales, comerciales y de remodelación.
+            </div>
+            <div class="hero-highlight">
+              <strong>Entregas puntuales</strong>
+              Planeación clara y comunicación constante con el cliente.
+            </div>
+            <div class="hero-highlight">
+              <strong>Calidad garantizada</strong>
+              Materiales confiables y mano de obra profesional.
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-image">
+          <h2>¿Qué construimos?</h2>
+          <p>
+            Desde ampliaciones de casa y remodelaciones de interiores, hasta
+            locales comerciales listos para operar.
+          </p>
+          <div class="hero-badges">
+            <div>
+              <strong>Residencial</strong>
+              <br />Casas, ampliaciones, cocinas, baños.
+            </div>
+            <div>
+              <strong>Comercial</strong>
+              <br />Locales, oficinas, fachadas.
+            </div>
+            <div>
+              <strong>Remodelaciones</strong>
+              <br />Actualización de espacios ya existentes.
+            </div>
+            <div>
+              <strong>Obra civil</strong>
+              <br />Trabajos estructurales y cimentaciones.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+        <h2>Servicios</h2>
+        <p class="section-intro">
+          Ofrecemos soluciones completas de construcción para acompañarte desde la
+          idea inicial hasta la entrega de la obra terminada.
+        </p>
+
+        <div class="grid">
+          <article class="card">
+            <div class="pill">Diseño y planeación</div>
+            <h3>Proyecto arquitectónico</h3>
+            <p>
+              Asesoría en diseño, distribución de espacios y selección de materiales
+              para aprovechar al máximo tu terreno o inmueble.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="pill">Construcción</div>
+            <h3>Obra nueva</h3>
+            <p>
+              Cimentación, estructura, albañilería, instalaciones y acabados para
+              casas, edificios pequeños y locales comerciales.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="pill">Remodelación</div>
+            <h3>Renovación de espacios</h3>
+            <p>
+              Remodelación de cocinas, baños, fachadas, pisos y más, con el mínimo
+              de molestias para los ocupantes.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="pill">Mantenimiento</div>
+            <h3>Reparaciones generales</h3>
+            <p>
+              Reparación de filtraciones, fisuras, instalaciones eléctricas e
+              hidráulicas, impermeabilización de azoteas y muros.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="pill">Gestión</div>
+            <h3>Supervisión de obra</h3>
+            <p>
+              Control de tiempo, costos y calidad, para que tu proyecto avance
+              conforme al plan y sin sorpresas.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="pill">Soporte</div>
+            <h3>Acompañamiento al cliente</h3>
+            <p>
+              Comunicación clara antes, durante y después de la obra para resolver
+              dudas y ajustar detalles.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+          <h2>Obras ejecutadas</h2>
+          <p class="section-intro">
+              Una muestra de los contratos de obra civil, mantenimiento e instalaciones
+              que hemos ejecutado para la iniciativa privada y el Municipio de Querétaro.
+          </p>
+
+          <div class="projects-grid" id="projectsGrid">
+              <!-- JS insertará aquí las cards -->
+          </div>
+          <div class="projects-toolbar">
+              <div class="projects-sort">
+                  <button type="button" class="btn-chip" data-project-sort="default">
+                      Orden original
+                  </button>
+                  <button type="button" class="btn-chip" data-project-sort="year-desc">
+                      Más recientes
+                  </button>
+                  <button type="button" class="btn-chip" data-project-sort="client">
+                      Cliente A–Z
+                  </button>
+              </div>
+
+              <!-- you can remove this span if you don’t like it -->
+              <p id="projectsStatus" class="projects-status">
+                  Mostrando primeras obras. Usa “Ver más” para ver el resto.
+              </p>
+          </div>
+
+          <div class="projects-grid" id="projectsGrid"></div>
+
+          <div class="projects-load-more-wrapper">
+              <button id="projectsLoadMore" type="button">
+                  Ver más obras
+              </button>
+          </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2>Contacto</h2>
+        <p class="section-intro">
+          Cuéntanos sobre tu proyecto y te contactaremos para agendar una visita o
+          enviar una cotización aproximada.
+        </p>
+
+        <div class="contact-layout">
+          <form id="contact-form">
+            <div class="field">
+              <label for="name">Nombre completo *</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+
+            <div class="field">
+              <label for="email">Correo electrónico *</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+
+              <div class="field">
+                  <label for="phoneCountry">Teléfono / WhatsApp</label>
+                  <div class="phone-row">
+                      <select name="phoneCountry" id="phoneCountry">
+                          <!-- México por defecto -->
+                          <option value="+52" selected>🇲🇽 +52 México</option>
+                          <!-- Aquí añades el resto de países que quieras -->
+                          <!-- <option value="+1">🇺🇸 +1 Estados Unidos</option> -->
+                          <!-- ... -->
+                      </select>
+
+                      <input
+                              type="tel"
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              placeholder="10 dígitos"
+                              inputmode="numeric"
+                              maxlength="10"
+                      />
+                  </div>
+              </div>
+
+            <div class="field">
+                <select name="projectType" id="projectType">
+                <option value="">Selecciona una opción</option>
+                <option value="residential">Casa / Residencial</option>
+                <option value="commercial">Comercial</option>
+                <option value="remodeling">Remodelación</option>
+                <option value="maintenance">Mantenimiento</option>
+                <option value="other">Otro</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="message">Descripción del proyecto *</label>
+              <textarea id="message" name="message" required placeholder="Por ejemplo: construir una recámara adicional, remodelar la cocina, etc."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+            <div id="form-msg" class="msg" aria-live="polite"></div>
+          </form>
+
+            <div class="contact-info">
+                <h3>Datos de contacto</h3>
+
+                <div class="info-block">
+                    <strong>Correo electrónico</strong>
+                    <a
+                            href="mailto:construcciones.guca@gmail.com"
+                            id="contactEmailLink"
+                    >
+                        construcciones.guca@gmail.com
+                    </a>
+                </div>
+
+                <div class="info-block">
+                    <strong>Facebook</strong>
+                    <a href="https://www.facebook.com/GUCACONSTRUCCIONES"
+                       target="_blank" rel="noopener">
+                        facebook.com/GUCACONSTRUCCIONES
+                    </a>
+                </div>
+
+                <div class="info-block">
+                    <strong>Domicilio fiscal</strong>
+                    <span>Michoacán 23, San José de los Olvera,<br>Corregidora, Qro.</span>
+                </div>
+            </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+      <div class="footer-inner">
+           <span class="footer-copy">
+              GUCA Construcciones. Todos los derechos reservados. © <span id="year"></span>
+           </span>
+
+          <div class="footer-icons">
+              <!-- Copy email -->
+              <button class="icon-btn" id="copyEmailBtn" title="Copiar correo">
+                  <i class="fa-regular fa-envelope"></i>
+              </button>
+
+              <!-- Facebook -->
+              <a
+                      class="icon-btn"
+                      href="https://www.facebook.com/GUCACONSTRUCCIONES"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Facebook"
+              >
+                  <i class="fa-brands fa-facebook-f"></i>
+              </a>
+
+              <!-- Back to top -->
+              <button class="back-top-btn" type="button">
+                  Volver arriba <span>↑</span>
+              </button>
+          </div>
+      </div>
+  </footer>
+
+  <!-- Toast centered message -->
+  <div id="copyToast" class="toast" role="status" aria-live="polite"></div>
+  <div id="contact-confirmation" class="contact-confirmation" hidden>
+      <div class="contact-confirmation__card">
+          <h2>Mensaje enviado</h2>
+          <p>
+              Gracias por contactarnos. Tu mensaje ha sido enviado a
+              <strong>construcciones.guca@gmail.com</strong>. Te responderemos lo antes posible.
+          </p>
+          <button id="contact-confirmation-close" class="btn btn-primary">
+              Volver al sitio
+          </button>
+      </div>
+  </div>
+</body>
+</html>
