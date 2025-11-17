@@ -18,277 +18,192 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ======================
-   Hero gallery grid (auto, rotates items)
-   ====================== */
+            Hero gallery grid (auto, rotates items)
+    ====================== */
     const heroGallery = document.getElementById('hero-gallery');
 
     if (heroGallery) {
-        fetch('/api/gallery')
-            .then(res => res.json())
-            .then(data => {
-                const allItems = data.items || [];
-                if (!allItems.length) return;
+        const folderPath = 'assets/Imagenes galería/';
 
-                const visibleCount = Math.min(3, allItems.length);
-                const folderPath = 'assets/Imagenes galería/';
-                const folderUrl = encodeURI(folderPath);
+        // type can be 'image' or 'video'
+        const allItems = [
+            { type: 'image', name: 'construccionimagen1.jpg' },
+            { type: 'image', name: 'construccionimagen2.jpg' },
+            { type: 'image', name: 'construccionimagen3.jpg' },
+            { type: 'image', name: 'construccionimagen4.jpg' },
+        ];
 
-                let startIndex = 0;
-                let visibleIndices = Array.from({ length: visibleCount }, (_, i) => i);
+        if (!allItems.length) return;
 
-                const slots = [];
-                for (let i = 0; i < visibleCount; i++) {
-                    const fig = document.createElement('figure');
-                    fig.className = 'hero-gallery-slide';
-                    heroGallery.appendChild(fig);
-                    slots.push(fig);
-                }
+        const visibleCount = Math.min(3, allItems.length);
+        const visibleIndices = Array.from({ length: visibleCount }, (_, i) => i);
+        const slots = [];
 
-                const FADE_DELAY = 200;
+        for (let i = 0; i < visibleCount; i++) {
+            const fig = document.createElement('figure');
+            fig.className = 'hero-gallery-slide';
+            heroGallery.appendChild(fig);
+            slots.push(fig);
+        }
 
-                const renderSlots = (initial = false) => {
-                    slots.forEach((fig, slotIndex) => {
-                        const item = allItems[visibleIndices[slotIndex]];
-                        if (!item) return;
+        const FADE_DELAY = 200;
 
-                        const updateContent = () => {
-                            fig.innerHTML = '';
+        const renderSlots = () => {
+            slots.forEach((fig, slotIndex) => {
+                const item = allItems[visibleIndices[slotIndex]];
+                if (!item) return;
 
-                            if (item.type === 'video') {
-                                const video = document.createElement('video');
-                                video.src = folderUrl + encodeURIComponent(item.name);
-                                video.muted = true;
-                                video.loop = true;
-                                video.autoplay = true;
-                                video.playsInline = true;
-                                fig.appendChild(video);
-                            } else {
-                                const img = document.createElement('img');
-                                img.src = folderUrl + encodeURIComponent(item.name);
-                                img.alt = item.name;
-                                fig.appendChild(img);
-                            }
+                const updateContent = () => {
+                    fig.innerHTML = '';
 
-                            requestAnimationFrame(() => {
-                                fig.style.opacity = '1';
-                            });
-                        };
+                    if (item.type === 'video') {
+                        const video = document.createElement('video');
+                        video.src = folderPath + encodeURIComponent(item.name);
+                        video.muted = true;
+                        video.loop = true;
+                        video.autoplay = true;
+                        video.playsInline = true;
+                        fig.appendChild(video);
+                    } else {
+                        const img = document.createElement('img');
+                        img.src = folderPath + encodeURIComponent(item.name);
+                        img.alt = item.name;
+                        fig.appendChild(img);
+                    }
 
-                        if (initial) {
-                            updateContent();
-                        } else {
-                            fig.style.opacity = '0';
-                            setTimeout(updateContent, FADE_DELAY);
-                        }
+                    requestAnimationFrame(() => {
+                        fig.style.opacity = '1';
                     });
                 };
 
-                renderSlots(true);
-
-                if (allItems.length > visibleCount) {
-                    setInterval(() => {
-                        startIndex = (startIndex + visibleCount) % allItems.length;
-                        visibleIndices = visibleIndices.map((_, i) =>
-                            (startIndex + i) % allItems.length
-                        );
-                        renderSlots(false);
-                    }, 7000);
-                }
-            })
-            .catch(err => {
-                console.error('Error loading gallery:', err);
+                fig.style.opacity = '0';
+                setTimeout(updateContent, FADE_DELAY);
             });
+        };
+
+        renderSlots();
+
+        if (allItems.length > visibleCount) {
+            let startIndex = 0;
+            setInterval(() => {
+                startIndex = (startIndex + visibleCount) % allItems.length;
+                for (let i = 0; i < visibleCount; i++) {
+                    visibleIndices[i] = (startIndex + i) % allItems.length;
+                }
+                renderSlots();
+            }, 7000);
+        }
     }
 
     /* ======================
-   Contact form handling
+   Contact form handling (Netlify + validation)
    ====================== */
     const form = document.getElementById('contact-form');
     const msgEl = document.getElementById('form-msg');
 
     if (form && msgEl) {
-        // --- inputs ---
-        const nameInput = form.querySelector('input[name="name"]');
-        const emailInput = form.querySelector('input[name="email"]');
-        const countrySelect = form.querySelector('select[name="phoneCountry"]');
-        const phoneInput = form.querySelector('input[name="phoneNumber"]');
-        const projectTypeInput = form.querySelector('select[name="projectType"]');
-        const confirmationEl = document.getElementById('contact-confirmation');
-        const confirmationCloseBtn = document.getElementById('contact-confirmation-close');
+        const MAX_PER_DAY = 5;
+        const STORAGE_KEY = 'gucaContactStats';
 
-        // --- basic patterns ---
-        const NAME_REGEX =
-            /^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?:\s+[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$/; // al menos nombre + apellido
-        const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const PHONE_REGEX = /^\d{10}$/; // solo 10 dígitos
-
-        // --- spam limit (por día, por navegador) ---
-        const MESSAGE_STATS_KEY = 'contactMessageStats';
-        const MAX_MESSAGES_PER_DAY = 3; // cámbialo a 5 si quieres
-
-        const getToday = () => new Date().toISOString().slice(0, 10);
-
-        function getMessageStats() {
+        const loadStats = () => {
             try {
-                const raw = localStorage.getItem(MESSAGE_STATS_KEY);
-                return raw ? JSON.parse(raw) : {};
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return { date: null, count: 0 };
+                return JSON.parse(raw);
             } catch {
-                return {};
+                return { date: null, count: 0 };
             }
-        }
+        };
 
-        function saveMessageStats(stats) {
+        const saveStats = (stats) => {
             try {
-                localStorage.setItem(MESSAGE_STATS_KEY, JSON.stringify(stats));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
             } catch {
-                /* ignore */
+                // ignore
             }
-        }
-
-        function canSendMoreToday() {
-            const stats = getMessageStats();
-            if (stats.date !== getToday()) return true;
-            return (stats.count || 0) < MAX_MESSAGES_PER_DAY;
-        }
-
-        function registerSentMessage() {
-            const stats = getMessageStats();
-            const today = getToday();
-            if (stats.date === today) {
-                stats.count = (stats.count || 0) + 1;
-            } else {
-                stats.date = today;
-                stats.count = 1;
-            }
-            saveMessageStats(stats);
-        }
-
-        // --- helpers UI ---
-        function clearFieldErrors() {
-            form.querySelectorAll('.field-error').forEach(el =>
-                el.classList.remove('field-error')
-            );
-        }
-
-        function showError(message, fieldToFocus) {
-            msgEl.textContent = message;
-            msgEl.className = 'msg error';
-            if (fieldToFocus) {
-                fieldToFocus.classList.add('field-error');
-                fieldToFocus.focus();
-            }
-        }
-
-        function showConfirmation() {
-            if (confirmationEl) {
-                confirmationEl.removeAttribute('hidden');
-            } else {
-                // fallback si no agregas la pantalla
-                msgEl.textContent = '¡Gracias! Hemos recibido tu mensaje. Te contactaremos pronto.';
-                msgEl.className = 'msg success';
-            }
-        }
-
-        if (confirmationCloseBtn && confirmationEl) {
-            confirmationCloseBtn.addEventListener('click', () => {
-                confirmationEl.setAttribute('hidden', 'hidden');
-            });
-        }
+        };
 
         form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            clearFieldErrors();
-
-            // --- spam check ---
-            if (!canSendMoreToday()) {
-                const limitMsg =
-                    MAX_MESSAGES_PER_DAY === 1
-                        ? 'Ya has enviado 1 mensaje hoy. Intenta de nuevo mañana.'
-                        : `Has alcanzado el límite de ${MAX_MESSAGES_PER_DAY} mensajes hoy. Intenta de nuevo mañana.`;
-                showError(limitMsg);
-                return;
-            }
-
             const data = new FormData(form);
+
             const name = (data.get('name') || '').toString().trim();
             const email = (data.get('email') || '').toString().trim();
-            const phoneCountry =
-                (data.get('phoneCountry') || '').toString().trim() || '+52'; // México por defecto
-            const phoneNumber = (data.get('phoneNumber') || '').toString().trim();
+            const phoneCountry = (data.get('phoneCountry') || '').toString().trim() || '+52';
+            const phoneNumberRaw = (data.get('phoneNumber') || '').toString().trim();
             const message = (data.get('message') || '').toString().trim();
-            const projectType = (data.get('projectType') || '').toString().trim();
 
-            // --- required fields ---
-            if (!name || !email || !phoneNumber || !message) {
-                showError('Por favor completa los campos obligatorios (*).');
+            // ---- REQUIRED ----
+            if (!name || !email || !phoneNumberRaw || !message) {
+                e.preventDefault();
+                msgEl.textContent = 'Por favor completa los campos obligatorios.';
+                msgEl.className = 'msg error';
                 return;
             }
 
-            // --- name validation: solo letras + espacios, al menos nombre y apellido ---
-            if (!NAME_REGEX.test(name)) {
-                showError(
-                    'Escribe tu nombre completo (nombre y apellido) solo con letras.',
-                    nameInput
-                );
+            // ---- NAME: at least 2 words, letters only ----
+            const nameRegex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?:\s+[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)+$/;
+            if (!nameRegex.test(name)) {
+                e.preventDefault();
+                msgEl.textContent = 'Escribe tu nombre y apellido usando solo letras.';
+                msgEl.className = 'msg error';
                 return;
             }
 
-            // --- email validation ---
-            if (!EMAIL_REGEX.test(email)) {
-                showError('Escribe un correo electrónico válido (ej. nombre@dominio.com).', emailInput);
+            // ---- EMAIL: basic pattern ----
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                e.preventDefault();
+                msgEl.textContent = 'Escribe un correo electrónico válido.';
+                msgEl.className = 'msg error';
                 return;
             }
 
-            // --- phone validation: solo dígitos, 10 números ---
-            if (!PHONE_REGEX.test(phoneNumber)) {
-                showError('Escribe un número de teléfono de 10 dígitos, solo números.', phoneInput);
+            // ---- PHONE: digits only, exactly 10 ----
+            const phoneDigits = phoneNumberRaw.replace(/\D/g, '');
+            if (phoneDigits.length !== 10) {
+                e.preventDefault();
+                msgEl.textContent = 'El teléfono debe tener 10 dígitos (solo números).';
+                msgEl.className = 'msg error';
                 return;
             }
 
-            const fullPhone = `${phoneCountry}${phoneNumber}`;
+            // ---- Build full phone into hidden field for Netlify ----
+            const fullPhone = `${phoneCountry} ${phoneDigits}`;
+            const phoneCombinedInput = document.getElementById('phoneCombined');
+            if (phoneCombinedInput) {
+                phoneCombinedInput.value = fullPhone;
+            }
 
-            // --- front-end “sending…” state ---
+            // ---- SPAM LIMIT: max 5 per day (per navegador) ----
+            const today = new Date().toISOString().slice(0, 10);
+            let stats = loadStats();
+
+            if (stats.date !== today) {
+                stats = { date: today, count: 0 };
+            }
+
+            if (stats.count >= MAX_PER_DAY) {
+                e.preventDefault();
+                msgEl.textContent =
+                    `Has alcanzado el límite de ${MAX_PER_DAY} mensajes por hoy. ` +
+                    'Por favor inténtalo mañana o contáctanos por teléfono.';
+                msgEl.className = 'msg error';
+                return;
+            }
+
+            // Count this submission and save
+            stats.count += 1;
+            saveStats(stats);
+
+            // Optional tiny feedback while Netlify/reCAPTCHA works
             msgEl.textContent = 'Enviando mensaje...';
             msgEl.className = 'msg';
 
-            // ================================
-            //  IMPORTANT:
-            //  Esto necesita un endpoint en tu backend
-            //  que envíe el correo a construcciones.guca@gmail.com
-            //  Ejemplo: POST /api/contact
-            // ================================
-            fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    phone: fullPhone,
-                    projectType,
-                    message,
-                }),
-            })
-                .then((res) => {
-                    if (!res.ok) {
-                        throw new Error('Error al enviar');
-                    }
-                    return res.json().catch(() => ({}));
-                })
-                .then(() => {
-                    // éxito
-                    registerSentMessage();
-                    form.reset();
-                    msgEl.textContent = '';
-                    msgEl.className = 'msg';
-                    showConfirmation();
-                })
-                .catch(() => {
-                    showError(
-                        'Hubo un problema al enviar tu mensaje. Intenta de nuevo en unos minutos.'
-                    );
-                });
+            // IMPORTANT: no e.preventDefault() here;
+            // the browser submits the form to Netlify.
         });
     }
+
 
     /* ======================
        Footer year

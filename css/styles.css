@@ -875,4 +875,16 @@ footer .footer-inner {
     border-color: #b91c1c !important;
     outline: 1px solid #b91c1c;
 }
+.hidden {
+    display: none;
+}
+
+.phone-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.phone-row select {
+    min-width: 140px;
+}
 
