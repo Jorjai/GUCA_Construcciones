@@ -2135,3 +2135,31 @@ footer {
     padding: 0.45rem 0.75rem;
     font-size: 0.82rem;
 }
+/* =========================
+   Clickable service cards
+   ========================= */
+
+.service-quote-card {
+    cursor: pointer;
+    position: relative;
+}
+
+.service-quote-card:hover,
+.service-quote-card:focus {
+    border-color: var(--home-accent);
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.14);
+    transform: translateY(-3px);
+    outline: none;
+}
+
+.service-card-action {
+    display: inline-flex;
+    margin-top: 0.85rem;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+[data-theme="dark"] .service-card-action {
+    color: #bae6fd;
+}

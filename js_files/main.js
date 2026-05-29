@@ -1,6 +1,5 @@
 // Main JS
-document.addEventListener('DOMContentLoaded', () => {
-    /* ======================
+document.addEventListener('DOMContentLoaded', async () => {    /* ======================
        Smooth scroll with header offset
        ====================== */
     const headerEl = document.querySelector('header');
@@ -26,12 +25,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const folderPath = 'assets/Imagenes galería/';
 
         // type can be 'image' or 'video'
-        const allItems = [
-            { type: 'image', name: 'construccionimagen1.jpg' },
-            { type: 'image', name: 'construccionimagen2.jpg' },
-            { type: 'image', name: 'construccionimagen3.jpg' },
-            { type: 'image', name: 'construccionimagen4.jpg' },
+        let allItems = [
+            { type: "image", name: "construccionimagen1.jpg", alt: "Imagen de obra 1" },
+            { type: "image", name: "construccionimagen2.jpg", alt: "Imagen de obra 2" },
+            { type: "image", name: "construccionimagen3.jpg", alt: "Imagen de obra 3" },
+            { type: "image", name: "construccionimagen4.jpg", alt: "Imagen de obra 4" },
         ];
+
+        const loadHomeGalleryImages = async () => {
+            if (typeof GucaSupabase === "undefined") {
+                return allItems;
+            }
+
+            const { data, error } = await GucaSupabase
+                .from("home_gallery_images")
+                .select("image_url, alt")
+                .eq("is_active", true)
+                .order("display_order", { ascending: true });
+
+            if (error) {
+                console.error("Error cargando imágenes de inicio:", error);
+                return allItems;
+            }
+
+            if (!data || data.length === 0) {
+                return allItems;
+            }
+
+            return data.map((image) => ({
+                type: "image",
+                name: image.image_url,
+                alt: image.alt || "Imagen de inicio"
+            }));
+        };
+
+        allItems = await loadHomeGalleryImages();
 
         if (!allItems.length) return;
 
@@ -58,7 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (item.type === 'video') {
                         const video = document.createElement('video');
-                        video.src = folderPath + encodeURIComponent(item.name);
+                        video.src =
+                            /^https?:\/\//i.test(item.name) || item.name.startsWith("assets/")
+                                ? item.name
+                                : folderPath + encodeURIComponent(item.name);
                         video.muted = true;
                         video.loop = true;
                         video.autoplay = true;
@@ -66,8 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         fig.appendChild(video);
                     } else {
                         const img = document.createElement('img');
-                        img.src = folderPath + encodeURIComponent(item.name);
-                        img.alt = item.name;
+                        img.src =
+                            /^https?:\/\//i.test(item.name) || item.name.startsWith("assets/")
+                                ? item.name
+                                : folderPath + encodeURIComponent(item.name);
+                        img.alt = item.alt || item.name;
                         fig.appendChild(img);
                     }
 

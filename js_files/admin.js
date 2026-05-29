@@ -65,6 +65,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     async function showAdminSection(section) {
+
+        if (section === "home-images") {
+            panelTitle.textContent = "Imágenes de inicio";
+            panelDescription.textContent = "Edita las imágenes principales que aparecen en la parte superior de la página de inicio.";
+
+            panelBody.innerHTML = `
+        <div class="admin-actions-row">
+            <button type="button" class="btn btn-primary" id="addHomeImageBtn">
+                Agregar imagen
+            </button>
+        </div>
+
+        <div id="homeImagesAdminList" class="admin-list">
+            Cargando imágenes...
+        </div>
+    `;
+
+            document
+                .getElementById("addHomeImageBtn")
+                .addEventListener("click", () => renderHomeImageForm());
+
+            await loadHomeImagesAdmin();
+            return;
+        }
         if (section === "services") {
             panelTitle.textContent = "Servicios";
             panelDescription.textContent = "Edita las tarjetas de servicios que aparecen en la página principal.";
@@ -285,6 +309,386 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
 
+    }
+
+    async function loadHomeImagesAdmin() {
+        const list = document.getElementById("homeImagesAdminList");
+        if (!list) return;
+
+        list.textContent = "Cargando imágenes...";
+
+        const { data, error } = await GucaSupabase
+            .from("home_gallery_images")
+            .select("*")
+            .order("display_order", { ascending: true });
+
+        if (error) {
+            console.error(error);
+            list.innerHTML = `
+            <div class="msg error">
+                No se pudieron cargar las imágenes de inicio.
+            </div>
+        `;
+            return;
+        }
+
+        if (!data || data.length === 0) {
+            list.innerHTML = `
+            <div class="admin-empty-state">
+                No hay imágenes todavía. Usa “Agregar imagen”.
+            </div>
+        `;
+            return;
+        }
+
+        list.innerHTML = data.map((image) => {
+            const src =
+                /^https?:\/\//i.test(image.image_url) || image.image_url.startsWith("assets/")
+                    ? image.image_url
+                    : `assets/Imagenes galería/${encodeURIComponent(image.image_url)}`;
+
+            return `
+            <article class="admin-item ${image.is_active ? "" : "admin-item-disabled"}">
+                <div>
+                    <div class="admin-gallery-preview-card" style="max-width:320px;">
+                        <img src="${escapeAttribute(src)}" alt="${escapeAttribute(image.alt || image.title || "Imagen de inicio")}" />
+                    </div>
+
+                    <span class="pill">${image.is_active ? "Visible" : "Oculta"}</span>
+                    <h3>${escapeHtml(image.title || "Imagen sin título")}</h3>
+
+                    <small>
+                        Archivo/URL: ${escapeHtml(image.image_url)}
+                        | Orden: ${image.display_order}
+                    </small>
+                </div>
+
+                <div class="admin-item-actions">
+                    <button type="button" class="btn btn-outline" data-edit-home-image="${image.id}">
+                        Editar
+                    </button>
+
+                    <button type="button" class="btn btn-outline" data-toggle-home-image="${image.id}" data-current-active="${image.is_active}">
+                        ${image.is_active ? "Ocultar" : "Mostrar"}
+                    </button>
+
+                    <button type="button" class="btn btn-outline admin-danger-btn" data-delete-home-image="${image.id}">
+                        Eliminar
+                    </button>
+                </div>
+            </article>
+        `;
+        }).join("");
+
+        document.querySelectorAll("[data-edit-home-image]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const image = data.find((item) => item.id === Number(btn.dataset.editHomeImage));
+                renderHomeImageForm(image);
+            });
+        });
+
+        document.querySelectorAll("[data-toggle-home-image]").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+                const id = Number(btn.dataset.toggleHomeImage);
+                const currentActive = btn.dataset.currentActive === "true";
+
+                const { error } = await GucaSupabase
+                    .from("home_gallery_images")
+                    .update({ is_active: !currentActive })
+                    .eq("id", id);
+
+                if (error) {
+                    alert("No se pudo cambiar el estado.");
+                    console.error(error);
+                    return;
+                }
+
+                await loadHomeImagesAdmin();
+            });
+        });
+
+        document.querySelectorAll("[data-delete-home-image]").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+                const id = Number(btn.dataset.deleteHomeImage);
+
+                const confirmDelete = confirm("¿Seguro que quieres eliminar esta imagen?");
+                if (!confirmDelete) return;
+
+                const { error } = await GucaSupabase
+                    .from("home_gallery_images")
+                    .delete()
+                    .eq("id", id);
+
+                if (error) {
+                    alert("No se pudo eliminar la imagen.");
+                    console.error(error);
+                    return;
+                }
+
+                await loadHomeImagesAdmin();
+            });
+        });
+    }
+
+    function renderHomeImageForm(image = null) {
+        const isEditing = Boolean(image);
+
+        panelTitle.textContent = isEditing ? "Editar imagen de inicio" : "Agregar imagen de inicio";
+        panelDescription.textContent = "Puedes usar un nombre de archivo local o una URL completa.";
+
+        panelBody.innerHTML = `
+        <form id="homeImageAdminForm" class="admin-edit-form">
+            <div class="field">
+                <label for="homeImageTitle">Título interno</label>
+                <input
+                    id="homeImageTitle"
+                    type="text"
+                    value="${image ? escapeAttribute(image.title || "") : ""}"
+                    placeholder="Ejemplo: Galería principal 1"
+                />
+            </div>
+
+            <div class="field">
+                <label for="homeImageUpload">Subir imagen</label>
+                <input
+                    id="homeImageUpload"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                />
+            
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="uploadHomeImageBtn"
+                    style="margin-top:0.6rem;"
+                >
+                    Subir imagen
+                </button>
+            
+                <p id="homeImageUploadMsg" class="msg" aria-live="polite"></p>
+            </div>
+            
+            <div class="field">
+                <label for="homeImageUrl">Archivo o URL de imagen</label>
+                <input
+                    id="homeImageUrl"
+                    type="text"
+                    value="${image ? escapeAttribute(image.image_url || "") : ""}"
+                    placeholder="La imagen subida aparecerá aquí automáticamente."
+                    required
+                />
+                <small>
+                    Puedes subir una imagen o escribir una URL completa. También puedes usar un archivo local como construccionimagen1.jpg.
+                </small>
+            
+                <div id="homeImagePreview" class="admin-image-preview"></div>
+            </div>
+    
+                <div class="field">
+                    <label for="homeImageAlt">Texto alternativo</label>
+                    <input
+                        id="homeImageAlt"
+                        type="text"
+                        value="${image ? escapeAttribute(image.alt || "") : ""}"
+                        placeholder="Descripción corta de la imagen"
+                    />
+                </div>
+    
+                <div class="field">
+                    <label for="homeImageOrder">Orden</label>
+                    <input
+                        id="homeImageOrder"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value="${image ? image.display_order : 1}"
+                        required
+                    />
+                </div>
+
+            <div class="field admin-checkbox-field">
+                <label>
+                    <input
+                        id="homeImageActive"
+                        type="checkbox"
+                        ${!image || image.is_active ? "checked" : ""}
+                    />
+                    Visible en la página
+                </label>
+            </div>
+
+            <div class="admin-form-actions">
+                <button type="submit" class="btn btn-primary">
+                    Guardar cambios
+                </button>
+
+                <button type="button" class="btn btn-outline" id="cancelHomeImageEdit">
+                    Cancelar
+                </button>
+            </div>
+
+            <p id="homeImageFormMsg" class="msg" aria-live="polite"></p>
+        </form>
+    `;
+
+        document.getElementById("cancelHomeImageEdit").addEventListener("click", () => {
+            showAdminSection("home-images");
+        });
+
+        const homeImageUrlInput = document.getElementById("homeImageUrl");
+        const homeImagePreview = document.getElementById("homeImagePreview");
+
+        const getHomeImageSrc = () => {
+            const value = homeImageUrlInput.value.trim();
+
+            if (!value) return "";
+
+            if (/^https?:\/\//i.test(value) || value.startsWith("assets/")) {
+                return value;
+            }
+
+            return `assets/Imagenes galería/${encodeURIComponent(value)}`;
+        };
+
+        const renderHomeImagePreview = () => {
+            const src = getHomeImageSrc();
+
+            if (!src) {
+                homeImagePreview.innerHTML = `
+            <div class="admin-image-preview-empty">
+                No hay imagen seleccionada.
+            </div>
+        `;
+                return;
+            }
+
+            homeImagePreview.innerHTML = `
+        <div class="admin-image-preview-card">
+            <img src="${escapeAttribute(src)}" alt="Vista previa de imagen de inicio" />
+
+            <button type="button" class="btn btn-outline admin-danger-btn" id="removeHomeImageBtn">
+                Quitar imagen
+            </button>
+        </div>
+    `;
+
+            document.getElementById("removeHomeImageBtn").addEventListener("click", () => {
+                homeImageUrlInput.value = "";
+                renderHomeImagePreview();
+            });
+        };
+
+        homeImageUrlInput.addEventListener("input", renderHomeImagePreview);
+        renderHomeImagePreview();
+
+        document.getElementById("uploadHomeImageBtn").addEventListener("click", async () => {
+            const fileInput = document.getElementById("homeImageUpload");
+            const uploadMsg = document.getElementById("homeImageUploadMsg");
+
+            const file = fileInput.files[0];
+
+            if (!file) {
+                uploadMsg.textContent = "Selecciona una imagen primero.";
+                uploadMsg.className = "msg error";
+                return;
+            }
+
+            const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+
+            if (!allowedTypes.includes(file.type)) {
+                uploadMsg.textContent = "Solo se permiten imágenes PNG, JPG o WEBP.";
+                uploadMsg.className = "msg error";
+                return;
+            }
+
+            const maxSize = 10 * 1024 * 1024;
+
+            if (file.size > maxSize) {
+                uploadMsg.textContent = "La imagen es demasiado grande. Máximo 10 MB.";
+                uploadMsg.className = "msg error";
+                return;
+            }
+
+            uploadMsg.textContent = "Subiendo imagen...";
+            uploadMsg.className = "msg";
+
+            const safeFileName = file.name
+                .toLowerCase()
+                .replaceAll(" ", "-")
+                .replace(/[^a-z0-9.\-_]/g, "");
+
+            const filePath = `home/${Date.now()}-${safeFileName}`;
+
+            const { error: uploadError } = await GucaSupabase.storage
+                .from("home-images")
+                .upload(filePath, file, {
+                    cacheControl: "3600",
+                    upsert: false
+                });
+
+            if (uploadError) {
+                console.error(uploadError);
+                uploadMsg.textContent = "No se pudo subir la imagen.";
+                uploadMsg.className = "msg error";
+                return;
+            }
+
+            const { data: publicUrlData } = GucaSupabase.storage
+                .from("home-images")
+                .getPublicUrl(filePath);
+
+            homeImageUrlInput.value = publicUrlData.publicUrl;
+            renderHomeImagePreview();
+
+            uploadMsg.textContent = "Imagen subida correctamente.";
+            uploadMsg.className = "msg success";
+
+            fileInput.value = "";
+        });
+
+        document.getElementById("homeImageAdminForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const msg = document.getElementById("homeImageFormMsg");
+
+            const payload = {
+                title: document.getElementById("homeImageTitle").value.trim(),
+                image_url: document.getElementById("homeImageUrl").value.trim(),
+                alt: document.getElementById("homeImageAlt").value.trim(),
+                display_order: Number(document.getElementById("homeImageOrder").value),
+                is_active: document.getElementById("homeImageActive").checked
+            };
+
+            msg.textContent = "Guardando...";
+            msg.className = "msg";
+
+            let result;
+
+            if (isEditing) {
+                result = await GucaSupabase
+                    .from("home_gallery_images")
+                    .update(payload)
+                    .eq("id", image.id);
+            } else {
+                result = await GucaSupabase
+                    .from("home_gallery_images")
+                    .insert(payload);
+            }
+
+            if (result.error) {
+                console.error(result.error);
+                msg.textContent = "No se pudieron guardar los cambios.";
+                msg.className = "msg error";
+                return;
+            }
+
+            msg.textContent = "Cambios guardados correctamente.";
+            msg.className = "msg success";
+
+            setTimeout(() => {
+                showAdminSection("home-images");
+            }, 700);
+        });
     }
 
     function renderServiceForm(service = null) {

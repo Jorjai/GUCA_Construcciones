@@ -105,7 +105,15 @@
             <div>
                 <h2>Solicita tu cotización de suministros</h2>
                 <p class="section-intro">Usa el botón “Cotizar este producto” en cualquier tarjeta para llenar automáticamente el folio.</p>
-                <form id="supply-form" name="suministros" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="suministros-exito.html">
+                <form
+                        id="supply-form"
+                        name="suministros"
+                        method="POST"
+                        data-netlify="true"
+                        data-netlify-recaptcha="true"
+                        netlify-honeypot="bot-field"
+                        action="suministros-exito.html"
+                    >
                     <input type="hidden" name="form-name" value="suministros" />
                     <p class="hidden"><label>No llenar:<input name="bot-field" /></label></p>
                     <div class="field"><label for="supplyName">Nombre completo *</label><input id="supplyName" name="name" type="text" placeholder="Nombre y apellidos" required /></div>
@@ -115,7 +123,12 @@
                     <div class="field"><label for="quantity">Cantidad estimada</label><input id="quantity" name="quantity" type="number" min="1" step="1" placeholder="Ejemplo: 20" /></div>
                     <div class="field"><label for="deliveryArea">Zona de entrega</label><input id="deliveryArea" name="deliveryArea" type="text" placeholder="Ejemplo: Querétaro, Corregidora, oficina, obra, etc." /></div>
                     <div class="field"><label for="supplyMessage">Detalles de la solicitud *</label><textarea id="supplyMessage" name="message" required placeholder="Describe qué necesitas, cantidad, fecha aproximada y cualquier detalle importante."></textarea></div>
-                    <button type="submit" class="btn btn-primary">Enviar solicitud</button><p id="supplyFormMsg" class="msg" aria-live="polite"></p>
+                    <div class="field">
+                        <div data-netlify-recaptcha="true"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+                    <p id="supplyFormMsg" class="msg" aria-live="polite"></p>
                 </form>
             </div>
             <div class="contact-info supply-contact-card">
