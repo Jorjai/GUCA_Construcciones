@@ -233,6 +233,62 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
             msgEl.textContent = 'Enviando mensaje...';
             msgEl.className = 'msg';
 
+            if (typeof GucaSupabase !== "undefined") {
+                e.preventDefault();
+
+                const projectType = (data.get("projectType") || "").toString().trim();
+
+                const requestPayload = {
+                    name,
+                    email,
+                    phone: fullPhone,
+                    project_type: projectType,
+                    message,
+                    status: "Nueva"
+                };
+
+                const netlifyPayload = new URLSearchParams(new FormData(form));
+                netlifyPayload.set("form-name", "contact");
+                netlifyPayload.set("name", name);
+                netlifyPayload.set("email", email);
+                netlifyPayload.set("phoneCombined", fullPhone);
+                netlifyPayload.set("projectType", projectType);
+                netlifyPayload.set("message", message);
+
+                Promise.all([
+                    GucaSupabase
+                        .from("service_requests")
+                        .insert(requestPayload),
+
+                    fetch(window.location.pathname, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: netlifyPayload.toString()
+                    })
+                ])
+                    .then(([supabaseResult, netlifyResult]) => {
+                        if (supabaseResult.error) {
+                            console.error(supabaseResult.error);
+                            msgEl.textContent = "No se pudo guardar la solicitud. Intenta de nuevo.";
+                            msgEl.className = "msg error";
+                            return;
+                        }
+
+                        if (!netlifyResult.ok) {
+                            console.warn("La solicitud se guardó en Supabase, pero Netlify no recibió el formulario.");
+                        }
+
+                        window.location.href = "contacto-exito.html";
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        msgEl.textContent = "No se pudo enviar la solicitud. Intenta de nuevo.";
+                        msgEl.className = "msg error";
+                    });
+            }
+
             // IMPORTANT: no e.preventDefault() here;
             // the browser submits the form to Netlify.
         });

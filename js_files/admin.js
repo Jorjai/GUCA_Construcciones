@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const panelTitle = document.getElementById("adminPanelTitle");
     const panelDescription = document.getElementById("adminPanelDescription");
     const panelBody = document.getElementById("adminPanelBody");
+    const adminStatsGrid = document.getElementById("adminStatsGrid");
 
     if (year) {
         year.textContent = new Date().getFullYear();
@@ -49,6 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     adminStatus.textContent = `Acceso autorizado: ${profile.email}`;
     adminStatus.className = "admin-status success";
     adminContent.hidden = false;
+    await loadAdminStats();
 
     if (logoutBtn) {
         logoutBtn.addEventListener("click", async () => {
@@ -80,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div id="homeImagesAdminList" class="admin-list">
             Cargando imágenes...
         </div>
-    `;
+        `;
 
             document
                 .getElementById("addHomeImageBtn")
@@ -189,19 +191,35 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        if (section === "requests") {
-            panelTitle.textContent = "Solicitudes de cotización";
+        if (section === "supply-requests") {
+            panelTitle.textContent = "Solicitudes de suministros";
             panelDescription.textContent = "Consulta solicitudes recibidas desde la página de suministros.";
 
             panelBody.innerHTML = `
         <div id="requestsAdminList" class="admin-list">
             Cargando solicitudes...
         </div>
-    `;
+        `;
 
             await loadRequestsAdmin();
             return;
         }
+
+        if (section === "service-requests") {
+            panelTitle.textContent = "Solicitudes de servicios";
+            panelDescription.textContent = "Consulta solicitudes recibidas desde el formulario principal.";
+
+            panelBody.innerHTML = `
+        <div id="serviceRequestsAdminList" class="admin-list">
+            Cargando solicitudes...
+        </div>
+        `;
+
+            await loadServiceRequestsAdmin();
+            return;
+        }
+
+
     }
 
     async function loadServicesAdmin() {
@@ -309,6 +327,156 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
 
+    }
+    async function loadAdminStats() {
+        if (!adminStatsGrid) return;
+
+        adminStatsGrid.innerHTML = `
+        <div class="admin-stat-card">Cargando resumen...</div>
+        `;
+
+        const [
+            servicesResult,
+            projectsResult,
+            inventoryResult,
+
+            serviceNewResult,
+            serviceProcessResult,
+            serviceClosedResult,
+
+            supplyNewResult,
+            supplyProcessResult,
+            supplyClosedResult
+        ] = await Promise.all([
+            GucaSupabase
+                .from("service_cards")
+                .select("id", { count: "exact", head: true })
+                .eq("is_active", true),
+
+            GucaSupabase
+                .from("projects")
+                .select("id", { count: "exact", head: true })
+                .eq("is_active", true),
+
+            GucaSupabase
+                .from("inventory_items")
+                .select("id", { count: "exact", head: true })
+                .eq("is_active", true),
+
+            // Solicitudes servicios
+            GucaSupabase
+                .from("service_requests")
+                .select("id", { count: "exact", head: true })
+                .eq("status", "Nueva"),
+
+            GucaSupabase
+                .from("service_requests")
+                .select("id", { count: "exact", head: true })
+                .eq("status", "En proceso"),
+
+            GucaSupabase
+                .from("service_requests")
+                .select("id", { count: "exact", head: true })
+                .eq("status", "Cerrada"),
+
+            // Solicitudes suministros
+            GucaSupabase
+                .from("supply_requests")
+                .select("id", { count: "exact", head: true })
+                .eq("status", "Nueva"),
+
+            GucaSupabase
+                .from("supply_requests")
+                .select("id", { count: "exact", head: true })
+                .eq("status", "En proceso"),
+
+            GucaSupabase
+                .from("supply_requests")
+                .select("id", { count: "exact", head: true })
+                .eq("status", "Cerrada")
+        ]);
+
+        const results = [
+            servicesResult,
+            projectsResult,
+            inventoryResult,
+            serviceNewResult,
+            serviceProcessResult,
+            serviceClosedResult,
+            supplyNewResult,
+            supplyProcessResult,
+            supplyClosedResult
+        ];
+
+        const hasError = results.some(result => result.error);
+
+        if (hasError) {
+            console.error({
+                servicesResult,
+                projectsResult,
+                inventoryResult,
+                serviceNewResult,
+                serviceProcessResult,
+                serviceClosedResult,
+                supplyNewResult,
+                supplyProcessResult,
+                supplyClosedResult
+            });
+
+            adminStatsGrid.innerHTML = `
+            <div class="msg error">
+                No se pudo cargar el resumen.
+            </div>
+        `;
+            return;
+        }
+
+        adminStatsGrid.innerHTML = `
+        <div class="admin-stat-card">
+            <strong>${servicesResult.count || 0}</strong>
+            <span>Servicios activos</span>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>${projectsResult.count || 0}</strong>
+            <span>Obras visibles</span>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>${inventoryResult.count || 0}</strong>
+            <span>Productos activos</span>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>${serviceNewResult.count || 0}</strong>
+            <span>Servicios: solicitudes nuevas</span>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>${serviceProcessResult.count || 0}</strong>
+            <span>Servicios: en proceso</span>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>${serviceClosedResult.count || 0}</strong>
+            <span>Servicios: cerradas</span>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>${supplyNewResult.count || 0}</strong>
+            <span>Suministros: solicitudes nuevas</span>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>${supplyProcessResult.count || 0}</strong>
+            <span>Suministros: en proceso</span>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>${supplyClosedResult.count || 0}</strong>
+            <span>Suministros: cerradas</span>
+        </div>
+        `;
     }
 
     async function loadHomeImagesAdmin() {
@@ -1300,7 +1468,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </button>
             </div>
         </article>
-    `).join("");
+        `).join("");
 
         document.querySelectorAll("[data-request-status]").forEach((btn) => {
             btn.addEventListener("click", async () => {
@@ -1322,6 +1490,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 await loadRequestsAdmin();
+                await loadAdminStats();
             });
         });
 
@@ -1344,6 +1513,124 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 await loadRequestsAdmin();
+            });
+        });
+    }
+
+    async function loadServiceRequestsAdmin() {
+        const list = document.getElementById("serviceRequestsAdminList");
+        if (!list) return;
+
+        list.textContent = "Cargando solicitudes...";
+
+        const { data, error } = await GucaSupabase
+            .from("service_requests")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            console.error(error);
+            list.innerHTML = `
+            <div class="msg error">
+                No se pudieron cargar las solicitudes de servicios.
+            </div>
+        `;
+            return;
+        }
+
+        if (!data || data.length === 0) {
+            list.innerHTML = `
+            <div class="admin-empty-state">
+                No hay solicitudes de servicios todavía.
+            </div>
+        `;
+            return;
+        }
+
+        list.innerHTML = data.map((request) => `
+        <article class="admin-item">
+            <div>
+                <span class="pill">${escapeHtml(request.status || "Nueva")}</span>
+
+                <h3>${escapeHtml(request.name)}</h3>
+
+                <p>
+                    <strong>Tipo de proyecto:</strong>
+                    ${escapeHtml(request.project_type || "No especificado")}
+                </p>
+
+                <p>
+                    <strong>Mensaje:</strong>
+                    ${escapeHtml(request.message)}
+                </p>
+
+                <small>
+                    Correo: ${escapeHtml(request.email)}
+                    | Tel: ${escapeHtml(request.phone)}
+                    | Fecha: ${new Date(request.created_at).toLocaleString("es-MX")}
+                </small>
+            </div>
+
+            <div class="admin-item-actions">
+                <button type="button" class="btn btn-outline" data-service-request-status="${request.id}" data-status="En proceso">
+                    En proceso
+                </button>
+
+                <button type="button" class="btn btn-outline" data-service-request-status="${request.id}" data-status="Cerrada">
+                    Cerrar
+                </button>
+
+                <button type="button" class="btn btn-outline admin-danger-btn" data-delete-service-request="${request.id}">
+                    Eliminar
+                </button>
+            </div>
+        </article>
+    `).join("");
+
+        document.querySelectorAll("[data-service-request-status]").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+                const id = Number(btn.dataset.serviceRequestStatus);
+                const status = btn.dataset.status;
+
+                const { error } = await GucaSupabase
+                    .from("service_requests")
+                    .update({
+                        status,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq("id", id);
+
+                if (error) {
+                    alert("No se pudo actualizar la solicitud.");
+                    console.error(error);
+                    return;
+                }
+
+                await loadServiceRequestsAdmin();
+                await loadAdminStats();
+            });
+        });
+
+        document.querySelectorAll("[data-delete-service-request]").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+                const id = Number(btn.dataset.deleteServiceRequest);
+
+                const confirmDelete = confirm("¿Seguro que quieres eliminar esta solicitud?");
+                if (!confirmDelete) return;
+
+                const { error } = await GucaSupabase
+                    .from("service_requests")
+                    .delete()
+                    .eq("id", id);
+
+                if (error) {
+                    alert("No se pudo eliminar la solicitud.");
+                    console.error(error);
+                    return;
+                }
+
+                await loadServiceRequestsAdmin();
+                await loadAdminStats();
             });
         });
     }

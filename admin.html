@@ -57,6 +57,16 @@
 
     <section id="adminContent" class="admin-content-section" hidden>
         <div class="container">
+
+            <div class="admin-dashboard card">
+                <h2>Resumen rápido</h2>
+                <p>Vista general del contenido y solicitudes del sitio.</p>
+
+                <div class="admin-stats-grid" id="adminStatsGrid">
+                    <div class="admin-stat-card">Cargando resumen...</div>
+                </div>
+            </div>
+
             <div class="admin-grid">
 
                 <button class="admin-card" type="button" data-admin-section="home-images">
@@ -100,12 +110,20 @@
                     <small>Editar productos, folios, precios y descripciones.</small>
                 </button>
 
-                <button class="admin-card" type="button" data-admin-section="requests">
-        <span class="admin-card-icon">
-            <i class="fa-solid fa-file-invoice"></i>
-        </span>
-                    <strong>Solicitudes</strong>
-                    <small>Ver y actualizar solicitudes de cotización recibidas.</small>
+                <button class="admin-card" type="button" data-admin-section="service-requests">
+                    <span class="admin-card-icon">
+                        <i class="fa-solid fa-house-circle-check"></i>
+                    </span>
+                    <strong>Solicitudes servicios</strong>
+                    <small>Ver solicitudes recibidas desde el formulario principal.</small>
+                </button>
+
+                <button class="admin-card" type="button" data-admin-section="supply-requests">
+                    <span class="admin-card-icon">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </span>
+                    <strong>Solicitudes suministros</strong>
+                    <small>Ver solicitudes recibidas desde la página de suministros.</small>
                 </button>
             </div>
 
