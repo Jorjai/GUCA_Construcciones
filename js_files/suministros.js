@@ -398,23 +398,23 @@ document.addEventListener("DOMContentLoaded", async () => {
                     status: "Nueva"
                 };
 
-                const netlifyPayload = new URLSearchParams();
+                const netlifyPayload = new URLSearchParams(new FormData(form));
 
-                netlifyPayload.append("form-name", "suministros");
-                netlifyPayload.append("name", name);
-                netlifyPayload.append("email", email);
-                netlifyPayload.append("phone", phone);
-                netlifyPayload.append("selectedProduct", requestPayload.selected_product || "");
-                netlifyPayload.append("quantity", requestPayload.quantity || "");
-                netlifyPayload.append("deliveryArea", requestPayload.delivery_area || "");
-                netlifyPayload.append("message", message);
+                netlifyPayload.set("form-name", "suministros");
+                netlifyPayload.set("name", name);
+                netlifyPayload.set("email", email);
+                netlifyPayload.set("phone", phone);
+                netlifyPayload.set("selectedProduct", requestPayload.selected_product || "");
+                netlifyPayload.set("quantity", requestPayload.quantity || "");
+                netlifyPayload.set("deliveryArea", requestPayload.delivery_area || "");
+                netlifyPayload.set("message", message);
 
                 Promise.all([
                     GucaSupabase
                         .from("supply_requests")
                         .insert(requestPayload),
 
-                    fetch("/", {
+                    fetch(window.location.pathname, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/x-www-form-urlencoded"
