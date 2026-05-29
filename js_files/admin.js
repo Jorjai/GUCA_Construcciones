@@ -328,12 +328,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     }
+
     async function loadAdminStats() {
         if (!adminStatsGrid) return;
 
         adminStatsGrid.innerHTML = `
         <div class="admin-stat-card">Cargando resumen...</div>
-        `;
+    `;
 
         const [
             servicesResult,
@@ -341,10 +342,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             inventoryResult,
 
             serviceNewResult,
+            serviceContactedResult,
             serviceProcessResult,
             serviceClosedResult,
 
             supplyNewResult,
+            supplyContactedResult,
             supplyProcessResult,
             supplyClosedResult
         ] = await Promise.all([
@@ -363,11 +366,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .select("id", { count: "exact", head: true })
                 .eq("is_active", true),
 
-            // Solicitudes servicios
             GucaSupabase
                 .from("service_requests")
                 .select("id", { count: "exact", head: true })
                 .eq("status", "Nueva"),
+
+            GucaSupabase
+                .from("service_requests")
+                .select("id", { count: "exact", head: true })
+                .eq("status", "Contactado"),
 
             GucaSupabase
                 .from("service_requests")
@@ -379,11 +386,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .select("id", { count: "exact", head: true })
                 .eq("status", "Cerrada"),
 
-            // Solicitudes suministros
             GucaSupabase
                 .from("supply_requests")
                 .select("id", { count: "exact", head: true })
                 .eq("status", "Nueva"),
+
+            GucaSupabase
+                .from("supply_requests")
+                .select("id", { count: "exact", head: true })
+                .eq("status", "Contactado"),
 
             GucaSupabase
                 .from("supply_requests")
@@ -401,9 +412,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             projectsResult,
             inventoryResult,
             serviceNewResult,
+            serviceContactedResult,
             serviceProcessResult,
             serviceClosedResult,
             supplyNewResult,
+            supplyContactedResult,
             supplyProcessResult,
             supplyClosedResult
         ];
@@ -416,9 +429,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 projectsResult,
                 inventoryResult,
                 serviceNewResult,
+                serviceContactedResult,
                 serviceProcessResult,
                 serviceClosedResult,
                 supplyNewResult,
+                supplyContactedResult,
                 supplyProcessResult,
                 supplyClosedResult
             });
@@ -432,53 +447,80 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         adminStatsGrid.innerHTML = `
-        <div class="admin-stat-card">
-            <strong>${servicesResult.count || 0}</strong>
-            <span>Servicios activos</span>
+        <div class="admin-stats-group">
+            <h3>Contenido del sitio</h3>
+
+            <div class="admin-stats-row stats-3">
+                <div class="admin-stat-card">
+                    <strong>${servicesResult.count || 0}</strong>
+                    <span>Servicios activos</span>
+                </div>
+
+                <div class="admin-stat-card">
+                    <strong>${projectsResult.count || 0}</strong>
+                    <span>Obras visibles</span>
+                </div>
+
+                <div class="admin-stat-card">
+                    <strong>${inventoryResult.count || 0}</strong>
+                    <span>Productos activos</span>
+                </div>
+            </div>
         </div>
 
-        <div class="admin-stat-card">
-            <strong>${projectsResult.count || 0}</strong>
-            <span>Obras visibles</span>
+        <div class="admin-stats-group">
+            <h3>Solicitudes de servicios</h3>
+
+            <div class="admin-stats-row stats-4">
+                <div class="admin-stat-card">
+                    <strong>${serviceNewResult.count || 0}</strong>
+                    <span>Nuevas</span>
+                </div>
+
+                <div class="admin-stat-card">
+                    <strong>${serviceContactedResult.count || 0}</strong>
+                    <span>Contactadas</span>
+                </div>
+
+                <div class="admin-stat-card">
+                    <strong>${serviceProcessResult.count || 0}</strong>
+                    <span>En proceso</span>
+                </div>
+
+                <div class="admin-stat-card">
+                    <strong>${serviceClosedResult.count || 0}</strong>
+                    <span>Cerradas</span>
+                </div>
+            </div>
         </div>
 
-        <div class="admin-stat-card">
-            <strong>${inventoryResult.count || 0}</strong>
-            <span>Productos activos</span>
-        </div>
+        <div class="admin-stats-group">
+            <h3>Solicitudes de suministros</h3>
 
-        <div class="admin-stat-card">
-            <strong>${serviceNewResult.count || 0}</strong>
-            <span>Servicios: solicitudes nuevas</span>
-        </div>
+            <div class="admin-stats-row stats-4">
+                <div class="admin-stat-card">
+                    <strong>${supplyNewResult.count || 0}</strong>
+                    <span>Nuevas</span>
+                </div>
 
-        <div class="admin-stat-card">
-            <strong>${serviceProcessResult.count || 0}</strong>
-            <span>Servicios: en proceso</span>
-        </div>
+                <div class="admin-stat-card">
+                    <strong>${supplyContactedResult.count || 0}</strong>
+                    <span>Contactadas</span>
+                </div>
 
-        <div class="admin-stat-card">
-            <strong>${serviceClosedResult.count || 0}</strong>
-            <span>Servicios: cerradas</span>
-        </div>
+                <div class="admin-stat-card">
+                    <strong>${supplyProcessResult.count || 0}</strong>
+                    <span>En proceso</span>
+                </div>
 
-        <div class="admin-stat-card">
-            <strong>${supplyNewResult.count || 0}</strong>
-            <span>Suministros: solicitudes nuevas</span>
+                <div class="admin-stat-card">
+                    <strong>${supplyClosedResult.count || 0}</strong>
+                    <span>Cerradas</span>
+                </div>
+            </div>
         </div>
-
-        <div class="admin-stat-card">
-            <strong>${supplyProcessResult.count || 0}</strong>
-            <span>Suministros: en proceso</span>
-        </div>
-
-        <div class="admin-stat-card">
-            <strong>${supplyClosedResult.count || 0}</strong>
-            <span>Suministros: cerradas</span>
-        </div>
-        `;
+    `;
     }
-
     async function loadHomeImagesAdmin() {
         const list = document.getElementById("homeImagesAdminList");
         if (!list) return;
@@ -1455,14 +1497,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
 
             <div class="admin-item-actions">
+                <button type="button" class="btn btn-outline" data-request-status="${request.id}" data-status="Contactado">
+                    Contactado
+                </button>
+            
                 <button type="button" class="btn btn-outline" data-request-status="${request.id}" data-status="En proceso">
                     En proceso
                 </button>
-
+            
                 <button type="button" class="btn btn-outline" data-request-status="${request.id}" data-status="Cerrada">
                     Cerrar
                 </button>
-
+            
                 <button type="button" class="btn btn-outline admin-danger-btn" data-delete-request="${request.id}">
                     Eliminar
                 </button>
@@ -1572,14 +1618,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
 
             <div class="admin-item-actions">
+                <button type="button" class="btn btn-outline" data-service-request-status="${request.id}" data-status="Contactado">
+                    Contactado
+                </button>
+            
                 <button type="button" class="btn btn-outline" data-service-request-status="${request.id}" data-status="En proceso">
                     En proceso
                 </button>
-
+            
                 <button type="button" class="btn btn-outline" data-service-request-status="${request.id}" data-status="Cerrada">
                     Cerrar
                 </button>
-
+            
                 <button type="button" class="btn btn-outline admin-danger-btn" data-delete-service-request="${request.id}">
                     Eliminar
                 </button>

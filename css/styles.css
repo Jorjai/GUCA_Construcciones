@@ -2223,3 +2223,55 @@ footer {
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+/* =========================
+   Admin dashboard grouped stats
+   ========================= */
+
+.admin-stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.admin-stats-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.admin-stats-group h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--muted);
+}
+
+.admin-stats-row {
+    display: grid;
+    gap: 1rem;
+}
+
+.admin-stats-row.stats-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-stats-row.stats-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.admin-stat-card {
+    min-height: 108px;
+}
+
+@media (max-width: 1000px) {
+    .admin-stats-row.stats-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .admin-stats-row.stats-3,
+    .admin-stats-row.stats-4 {
+        grid-template-columns: 1fr;
+    }
+}
