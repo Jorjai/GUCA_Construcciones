@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Panel administrador | GUCA Construcciones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="js_files/supabaseClient.js"></script>
+    <script defer src="js_files/admin.js"></script>
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+</head>
+
+<body class="admin-page">
+<header>
+    <div class="container nav-bar">
+        <a class="logo logo-link" href="index.html">
+            <img src="assets/logo-placeholder.png" alt="Logo Construcciones GUCA" />
+            <span class="logo-title">GUCA Admin</span>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Sitio principal</a></li>
+                <li><a href="suministros.html">Suministros</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+
+        <button id="adminLogoutBtn" class="btn btn-outline" type="button">
+            Cerrar sesión
+        </button>
+    </div>
+</header>
+
+<main class="admin-main">
+    <section class="admin-hero">
+        <div class="container">
+            <span class="home-kicker">Panel interno</span>
+            <h1>Administrador de contenido</h1>
+            <p>
+                Desde aquí podrás editar servicios, obras ejecutadas, categorías de suministros
+                e inventario para cotización.
+            </p>
+
+            <p id="adminStatus" class="admin-status">
+                Verificando acceso...
+            </p>
+        </div>
+    </section>
+
+    <section id="adminContent" class="admin-content-section" hidden>
+        <div class="container">
+            <div class="admin-grid">
+                <button class="admin-card" type="button" data-admin-section="services">
+        <span class="admin-card-icon">
+            <i class="fa-solid fa-helmet-safety"></i>
+        </span>
+                    <strong>Servicios</strong>
+                    <small>Editar las tarjetas de servicios principales.</small>
+                </button>
+
+                <button class="admin-card" type="button" data-admin-section="projects">
+        <span class="admin-card-icon">
+            <i class="fa-solid fa-building"></i>
+        </span>
+                    <strong>Obras ejecutadas</strong>
+                    <small>Agregar o modificar proyectos con imágenes.</small>
+                </button>
+
+                <button class="admin-card" type="button" data-admin-section="categories">
+        <span class="admin-card-icon">
+            <i class="fa-solid fa-boxes-stacked"></i>
+        </span>
+                    <strong>Categorías de suministros</strong>
+                    <small>Editar categorías como uniformes, alimentos y limpieza.</small>
+                </button>
+
+                <button class="admin-card" type="button" data-admin-section="inventory">
+        <span class="admin-card-icon">
+            <i class="fa-solid fa-clipboard-list"></i>
+        </span>
+                    <strong>Inventario</strong>
+                    <small>Editar productos, folios, precios y descripciones.</small>
+                </button>
+
+                <button class="admin-card" type="button" data-admin-section="requests">
+        <span class="admin-card-icon">
+            <i class="fa-solid fa-file-invoice"></i>
+        </span>
+                    <strong>Solicitudes</strong>
+                    <small>Ver y actualizar solicitudes de cotización recibidas.</small>
+                </button>
+            </div>
+
+            <div class="admin-panel card">
+                <h2 id="adminPanelTitle">Selecciona una sección</h2>
+                <p id="adminPanelDescription">
+                    Haz clic en una tarjeta de arriba para empezar a administrar el contenido.
+                </p>
+
+                <div id="adminPanelBody" class="admin-panel-body"></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <span class="footer-copy">
+            GUCA Construcciones. Todos los derechos reservados. © <span id="year"></span>
+        </span>
+    </div>
+</footer>
+</body>
+</html>

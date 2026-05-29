@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Página no encontrada | GUCA Construcciones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="La página solicitada no existe o fue movida. Regresa al sitio principal de GUCA Construcciones." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+</head>
+<body>
+<header>
+    <div class="container nav-bar">
+        <a class="logo logo-link" href="/" aria-label="Volver al inicio de GUCA Construcciones">
+            <img src="assets/logo-placeholder.png" alt="Logo Construcciones GUCA" />
+            <span class="logo-title">GUCA Construcciones</span>
+        </a>
+
+        <nav aria-label="Navegación principal">
+            <ul>
+                <li><a href="/#services">Servicios</a></li>
+                <li><a href="/#projects">Proyectos</a></li>
+                <li><a href="/#contact">Contacto</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="not-found-page">
+        <div class="container not-found-grid">
+            <div class="not-found-content">
+                <p class="not-found-eyebrow">Error 404</p>
+                <h1>Esta página no está disponible.</h1>
+                <p>
+                    Es posible que el enlace haya cambiado, que la página haya sido movida
+                    o que la dirección esté escrita incorrectamente.
+                </p>
+
+                <div class="hero-cta not-found-actions">
+                    <a href="/" class="btn btn-primary">
+                        Volver al inicio
+                    </a>
+                    <a href="/#contact" class="btn btn-outline not-found-outline">
+                        Solicitar cotización
+                    </a>
+                </div>
+            </div>
+
+            <aside class="not-found-card" aria-label="Información de ayuda">
+                <div class="not-found-code">404</div>
+                <h2>¿Buscabas algo específico?</h2>
+                <p>
+                    Puedes regresar al inicio, revisar nuestros servicios o contactarnos
+                    directamente para hablar sobre tu proyecto.
+                </p>
+
+                <div class="not-found-links">
+                    <a href="/#services">Ver servicios <span>→</span></a>
+                    <a href="/#projects">Ver obras ejecutadas <span>→</span></a>
+                    <a href="mailto:construcciones.guca@gmail.com">Enviar correo <span>→</span></a>
+                </div>
+            </aside>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <span class="footer-copy">
+            GUCA Construcciones. Todos los derechos reservados. © <span id="year"></span>
+        </span>
+
+        <div class="footer-icons">
+            <a
+                    class="icon-btn"
+                    href="mailto:construcciones.guca@gmail.com"
+                    title="Enviar correo"
+                    aria-label="Enviar correo"
+            >
+                <i class="fa-regular fa-envelope"></i>
+            </a>
+
+            <a
+                    class="icon-btn"
+                    href="https://www.facebook.com/GUCACONSTRUCCIONES"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Facebook"
+                    aria-label="Facebook"
+            >
+                <i class="fa-brands fa-facebook-f"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

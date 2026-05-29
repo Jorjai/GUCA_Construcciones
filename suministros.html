@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Suministros | GUCA Construcciones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="División Comercializadora de GUCA Construcciones: uniformes, alimentos, artículos de limpieza, refacciones, papelería y suministros empresariales." />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="js_files/supabaseClient.js"></script>
+    <script defer src="js_files/supplyContent.js"></script>
+    <script defer src="js_files/suministros.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body class="supply-page">
+<header>
+    <div class="container nav-bar">
+        <a class="logo logo-link" href="index.html" aria-label="Volver al inicio de GUCA Construcciones">
+            <img src="assets/logo-placeholder.png" alt="Logo Construcciones GUCA" />
+            <div class="logo-title">GUCA Construcciones</div>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html#services">Servicios</a></li>
+                <li><a href="index.html#projects">Proyectos</a></li>
+                <li><a href="suministros.html" aria-current="page">Suministros</a></li>
+                <li><a href="#supply-contact">Contacto</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle" class="btn btn-outline" aria-label="Cambiar tema">🌙</button>
+    </div>
+</header>
+
+<main>
+    <section class="supply-hero">
+        <div class="container supply-hero-grid">
+            <div>
+                <div class="supply-kicker">Nueva división comercializadora</div>
+                <h1>Tu socio en suministros para que tu operación no se detenga.</h1>
+                <p>Resolvemos la compra y cotización de insumos para empresas, oficinas, obras, comedores, mantenimiento y operación diaria.</p>
+                <div class="hero-cta">
+                    <a href="#inventory" class="btn btn-primary">Ver inventario</a>
+                    <a href="#supply-contact" class="btn btn-outline supply-outline-light">Solicitar cotización</a>
+                </div>
+            </div>
+
+            <aside class="supply-hero-panel" aria-label="Resumen de la división de suministros">
+                <div class="supply-panel-icon"><i class="fa-solid fa-handshake"></i></div>
+                <h2>Nosotros nos encargamos</h2>
+                <p>Selecciona productos por folio, agrega el producto de interés al formulario y envía tu solicitud. El pago en línea se podrá integrar en una etapa futura.</p>
+                <div class="supply-mini-list" aria-label="Accesos rápidos de suministros">
+                    <button type="button" class="supply-mini-action" data-supply-action="search">
+                        <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                    </button>
+                    <button type="button" class="supply-mini-action" data-supply-action="sort">
+                        <i class="fa-solid fa-arrow-down-wide-short"></i> Ordenar
+                    </button>
+                    <button type="button" class="supply-mini-action" data-supply-action="quote">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> Cotizar
+                    </button>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <section id="categories" class="supply-categories-section">
+        <div class="container">
+            <h2>Categorías de suministros</h2>
+            <p class="section-intro">Haz clic en una categoría para ver los artículos disponibles y sus folios de identificación.</p>
+            <div class="supply-category-grid" id="supplyCategoryGrid">
+                <button class="supply-category-card" type="button" data-category="uniformes"><span class="supply-category-icon"><i class="fa-solid fa-vest"></i></span><strong>Uniformes</strong><small>Chalecos, cascos, camisas y equipo laboral.</small></button>
+                <button class="supply-category-card" type="button" data-category="alimentos"><span class="supply-category-icon"><i class="fa-solid fa-apple-whole"></i></span><strong>Alimentos</strong><small>Insumos para comedor, oficina o eventos.</small></button>
+                <button class="supply-category-card" type="button" data-category="limpieza"><span class="supply-category-icon"><i class="fa-solid fa-spray-can-sparkles"></i></span><strong>Artículos de limpieza</strong><small>Productos de higiene, limpieza y mantenimiento.</small></button>
+                <button class="supply-category-card" type="button" data-category="refacciones"><span class="supply-category-icon"><i class="fa-solid fa-gears"></i></span><strong>Refacciones</strong><small>Herramientas, piezas y soporte operativo.</small></button>
+                <button class="supply-category-card" type="button" data-category="papeleria"><span class="supply-category-icon"><i class="fa-solid fa-file-lines"></i></span><strong>Papelería</strong><small>Material de oficina, archivo y documentación.</small></button>
+                <button class="supply-category-card" type="button" data-category="otros"><span class="supply-category-icon"><i class="fa-solid fa-boxes-stacked"></i></span><strong>Todo lo que necesiten</strong><small>Solicitudes especiales para tu operación.</small></button>
+            </div>
+        </div>
+    </section>
+
+    <section id="inventory">
+        <div class="container">
+            <h2>Inventario para cotización</h2>
+            <p class="section-intro">Cada producto tiene un folio para identificarlo fácilmente en la solicitud.</p>
+            <div class="inventory-toolbar">
+                <div class="field inventory-search-field"><label for="inventorySearch">Buscar producto, folio, categoría o tipo</label><input id="inventorySearch" type="search" placeholder="Ejemplo: uniforme, LIM-001, papel, casco..." /></div>
+                <div class="field"><label for="categoryFilter">Categoría</label><select id="categoryFilter"><option value="all">Todas</option><option value="uniformes">Uniformes</option><option value="alimentos">Alimentos</option><option value="limpieza">Artículos de limpieza</option><option value="refacciones">Refacciones</option><option value="papeleria">Papelería</option><option value="otros">Otros</option></select></div>
+                <div class="field"><label for="typeFilter">Tipo</label><select id="typeFilter"><option value="all">Todos</option></select></div>
+                <div class="field"><label for="sortInventory">Ordenar por</label><select id="sortInventory"><option value="featured">Recomendados</option><option value="price-asc">Precio: menor a mayor</option><option value="price-desc">Precio: mayor a menor</option><option value="name-asc">Nombre A-Z</option><option value="name-desc">Nombre Z-A</option><option value="category-asc">Categoría A-Z</option><option value="type-asc">Tipo A-Z</option><option value="serial-asc">Folio A-Z</option></select></div>
+            </div>
+            <div class="inventory-status" id="inventoryStatus" aria-live="polite"></div>
+            <div class="inventory-grid" id="inventoryGrid"></div>
+            <div class="inventory-load-more-wrapper">
+                <button type="button" class="btn btn-primary" id="inventoryLoadMoreBtn">
+                    Ver más productos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="payment-preview-section"><div class="container payment-preview-card"><div><div class="pill">Próxima etapa</div><h2>Portal de pagos en línea</h2><p>Por ahora el sitio está preparado para recibir solicitudes de cotización. Si la división funciona bien, esta sección puede crecer hacia un portal con carrito, pagos en línea, historial de pedidos y cuentas para clientes.</p></div><a href="#supply-contact" class="btn btn-primary">Primero solicitar cotización</a></div></section>
+
+    <section id="supply-contact">
+        <div class="container contact-layout">
+            <div>
+                <h2>Solicita tu cotización de suministros</h2>
+                <p class="section-intro">Usa el botón “Cotizar este producto” en cualquier tarjeta para llenar automáticamente el folio.</p>
+                <form id="supply-form" name="suministros" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="suministros-exito.html">
+                    <input type="hidden" name="form-name" value="suministros" />
+                    <p class="hidden"><label>No llenar:<input name="bot-field" /></label></p>
+                    <div class="field"><label for="supplyName">Nombre completo *</label><input id="supplyName" name="name" type="text" placeholder="Nombre y apellidos" required /></div>
+                    <div class="field"><label for="supplyEmail">Correo electrónico *</label><input id="supplyEmail" name="email" type="email" placeholder="tucorreo@ejemplo.com" required /></div>
+                    <div class="field"><label for="supplyPhone">Teléfono / WhatsApp *</label><input id="supplyPhone" name="phone" type="tel" placeholder="Ejemplo: +52 442 000 0000" required /></div>
+                    <div class="field"><label for="selectedProduct">Producto o folio de interés</label><input id="selectedProduct" name="selectedProduct" type="text" placeholder="Ejemplo: LIM-001 | Desinfectante multiusos" /></div>
+                    <div class="field"><label for="quantity">Cantidad estimada</label><input id="quantity" name="quantity" type="number" min="1" step="1" placeholder="Ejemplo: 20" /></div>
+                    <div class="field"><label for="deliveryArea">Zona de entrega</label><input id="deliveryArea" name="deliveryArea" type="text" placeholder="Ejemplo: Querétaro, Corregidora, oficina, obra, etc." /></div>
+                    <div class="field"><label for="supplyMessage">Detalles de la solicitud *</label><textarea id="supplyMessage" name="message" required placeholder="Describe qué necesitas, cantidad, fecha aproximada y cualquier detalle importante."></textarea></div>
+                    <button type="submit" class="btn btn-primary">Enviar solicitud</button><p id="supplyFormMsg" class="msg" aria-live="polite"></p>
+                </form>
+            </div>
+            <div class="contact-info supply-contact-card">
+                <h3>División Comercializadora</h3>
+                <div class="info-block"><strong>Correo de cotizaciones</strong><a href="mailto:guca.construcciones.qro@gmail.com" id="supplyEmailLink">guca.construcciones.qro@gmail.com</a></div>
+                <div class="info-block"><strong>Atención</strong><span>Uniformes, alimentos, limpieza, refacciones, papelería y solicitudes especiales.</span></div>
+                <div class="info-block"><strong>Proceso recomendado</strong><span>1. Busca producto → 2. Copia folio → 3. Envía solicitud → 4. Recibe cotización.</span></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer><div class="footer-inner"><span class="footer-copy">GUCA Construcciones. Todos los derechos reservados. © <span id="year"></span></span><div class="footer-icons"><button class="icon-btn" id="copySupplyEmailBtn" title="Copiar correo de suministros"><i class="fa-regular fa-envelope"></i></button><a class="icon-btn" href="index.html" title="Sitio principal"><i class="fa-solid fa-house"></i></a><button class="back-top-btn" type="button">Volver arriba <span>↑</span></button></div></div></footer>
+<div id="copyToast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

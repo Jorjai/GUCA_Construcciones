@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Iniciar sesión | GUCA Construcciones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="js_files/supabaseClient.js"></script>
+    <script defer src="js_files/auth.js"></script>
+</head>
+
+<body class="login-page">
+<header>
+    <div class="container nav-bar">
+        <a class="logo logo-link" href="index.html">
+            <img src="assets/logo-placeholder.png" alt="Logo Construcciones GUCA" />
+            <span class="logo-title">GUCA Construcciones</span>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="suministros.html">Suministros</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="login-main">
+    <section class="login-section">
+        <div class="container login-layout">
+            <div class="login-info">
+                <span class="home-kicker">Acceso seguro</span>
+                <h1>Iniciar sesión</h1>
+                <p>
+                    Accede con tu correo y contraseña. El panel administrativo solo está
+                    disponible para usuarios autorizados.
+                </p>
+            </div>
+
+            <form id="loginForm" class="login-card">
+                <h2>Entrar a GUCA</h2>
+
+                <div class="field">
+                    <label for="loginEmail">Correo electrónico</label>
+                    <input
+                            id="loginEmail"
+                            type="email"
+                            placeholder="correo@ejemplo.com"
+                            required
+                    />
+                </div>
+
+                <div class="field">
+                    <label for="loginPassword">Contraseña</label>
+                    <input
+                            id="loginPassword"
+                            type="password"
+                            placeholder="Tu contraseña"
+                            required
+                    />
+                </div>
+
+                <button type="submit" class="btn btn-primary login-submit">
+                    Iniciar sesión
+                </button>
+
+                <p id="loginMessage" class="msg" aria-live="polite"></p>
+
+                <hr class="login-divider" />
+
+                <p class="login-note">
+                    El inicio con Google se agregará en el siguiente paso.
+                </p>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <span class="footer-copy">
+            GUCA Construcciones. Todos los derechos reservados. © <span id="year"></span>
+        </span>
+    </div>
+</footer>
+</body>
+</html>

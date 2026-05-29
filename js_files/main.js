@@ -352,7 +352,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 thumb.tabIndex = 0; // keyboard focus support
 
                 const createMediaElement = (fileName) => {
-                    const src = PROJECT_MEDIA_PATH + encodeURIComponent(fileName);
+                    const src =
+                        /^https?:\/\//i.test(fileName) || fileName.startsWith("assets/")
+                            ? fileName
+                            : PROJECT_MEDIA_PATH + encodeURIComponent(fileName);
 
                     if (isVideoFile(fileName)) {
                         const video = document.createElement('video');
@@ -379,8 +382,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 let activeEl = createMediaElement(mediaList[0]);
                 thumb.appendChild(activeEl);
 
-                // Only slideshow if more than 1 media file
                 if (mediaList.length > 1) {
+                    const badge = document.createElement("span");
+                    badge.className = "project-gallery-badge";
+                    badge.textContent = `${mediaList.length} fotos`;
+                    thumb.appendChild(badge);
+
                     let intervalId = null;
 
                     const switchMedia = () => {
@@ -409,8 +416,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     thumb.addEventListener('mouseleave', stopSlideshow);
                     thumb.addEventListener('focusin', startSlideshow);
                     thumb.addEventListener('focusout', stopSlideshow);
+                    thumb.addEventListener("click", switchMedia);
                 }
-
                 article.appendChild(thumb);
             }
 
@@ -520,20 +527,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- fetch data and initial render ---
 
-        fetch('data/projects.json')
-            .then((res) => res.json())
-            .then((projects) => {
-                allProjects = projects || [];
+        const normalizeProjectFromDb = (project) => {
+            let gallery = [];
 
-                if (allProjects.length <= INITIAL_VISIBLE) {
-                    visibleCount = allProjects.length;
-                    isExpanded = true; // no toggle needed
-                }
+            if (Array.isArray(project.gallery)) {
+                gallery = project.gallery;
+            } else if (project.image_url) {
+                gallery = [project.image_url];
+            }
 
-                renderProjects();
-            })
-            .catch((err) => {
-                console.error('Error cargando projects.json:', err);
-            });
+            return {
+                category: project.category,
+                title: project.title,
+                description: project.description,
+                client: project.client || "No especificado",
+                year: project.project_year || "",
+                amount: project.amount,
+                gallery,
+                alt: project.alt || project.title
+            };
+        };
+
+        if (typeof GucaSupabase !== "undefined") {
+            GucaSupabase
+                .from("projects")
+                .select("*")
+                .eq("is_active", true)
+                .order("display_order", { ascending: true })
+                .then(({ data, error }) => {
+                    if (error) {
+                        console.error("Error cargando proyectos desde Supabase:", error);
+                        return;
+                    }
+
+                    allProjects = (data || []).map(normalizeProjectFromDb);
+
+                    if (allProjects.length <= INITIAL_VISIBLE) {
+                        visibleCount = allProjects.length;
+                        isExpanded = true;
+                    }
+
+                    renderProjects();
+                });
+        } else {
+            console.warn("Supabase no cargó. No se pudieron cargar las obras.");
+        }
     }
 });

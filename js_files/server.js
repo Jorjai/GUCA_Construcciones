@@ -1,14 +1,25 @@
+require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
-const fs = require('fs');              // <-- add this
+const fs = require('fs');
+const cors = require('cors');
+const nodemailer = require('nodemailer');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from the project root
-app.use(express.static(path.join(__dirname, '..')));
-// Folder where gallery images/videos live
-const GALLERY_DIR = path.join(__dirname, '..', 'assets', 'Imagenes galería');
+// Works whether this file is inside /js_files or in the project root.
+const PROJECT_ROOT = fs.existsSync(path.join(__dirname, 'index.html'))
+    ? __dirname
+    : path.join(__dirname, '..');
+
+const GALLERY_DIR = path.join(PROJECT_ROOT, 'assets', 'Imagenes galería');
+
+// --- middlewares ---
+app.use(cors());
+app.use(express.json());
+app.use(express.static(PROJECT_ROOT));
 
 // API: return list of media files in the gallery folder
 app.get('/api/gallery', (req, res) => {
@@ -18,17 +29,17 @@ app.get('/api/gallery', (req, res) => {
             return res.status(500).json({ error: 'No se pudo leer la galería.' });
         }
 
-        // Allowed extensions
         const imageExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
         const videoExts = ['.mp4', '.webm', '.ogg'];
 
         const items = files
-            .filter(name => !name.startsWith('.')) // ignore hidden files
+            .filter(name => !name.startsWith('.'))
             .map(name => {
                 const ext = path.extname(name).toLowerCase();
                 let type = 'image';
+
                 if (videoExts.includes(ext)) type = 'video';
-                else if (!imageExts.includes(ext)) return null; // skip unsupported
+                else if (!imageExts.includes(ext)) return null;
 
                 return { name, type };
             })
@@ -38,50 +49,35 @@ app.get('/api/gallery', (req, res) => {
     });
 });
 
-// Simple API example (you can adapt this later)
+// Simple API health check
 app.get('/api/ping', (req, res) => {
-  res.json({ ok: true, message: 'Construcciones GUCA API en línea.' });
+    res.json({ ok: true, message: 'Construcciones GUCA API en línea.' });
 });
-
-app.listen(PORT, () => {
-  console.log(`Servidor de Construcciones GUCA corriendo en http://localhost:${PORT}`);
-});
-require('dotenv').config();
-
-const cors = require('cors');
-const nodemailer = require('nodemailer');
-
-
-// --- middlewares ---
-app.use(cors());                  // ajústalo si backend y frontend están en dominios distintos
-app.use(express.json());          // parsea JSON en req.body
-
-// (Opcional) servir frontend estático si lo tienes en /public:
-// app.use(express.static('public'));
 
 // --- nodemailer transporter ---
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT || 587),
-    secure: process.env.SMTP_SECURE === 'true', // true para 465, false para 587
+    secure: process.env.SMTP_SECURE === 'true',
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
 });
 
-// Test de conexión SMTP al arrancar
-transporter.verify(function (error, success) {
-    if (error) {
-        console.error('Error verificando SMTP:', error);
-    } else {
-        console.log('Servidor SMTP listo para enviar correos');
-    }
-});
+// Test SMTP connection only when SMTP is configured.
+if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    transporter.verify((error) => {
+        if (error) {
+            console.error('Error verificando SMTP:', error);
+        } else {
+            console.log('Servidor SMTP listo para enviar correos');
+        }
+    });
+}
 
-// --- ayuda simple de validación ---
-const isNonEmptyString = (v) =>
-    typeof v === 'string' && v.trim().length > 0;
+const isNonEmptyString = (value) =>
+    typeof value === 'string' && value.trim().length > 0;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -90,7 +86,6 @@ app.post('/api/contact', async (req, res) => {
     try {
         const { name, email, phone, projectType, message } = req.body || {};
 
-        // Validación básica
         if (
             !isNonEmptyString(name) ||
             !isNonEmptyString(email) ||
@@ -115,6 +110,12 @@ app.post('/api/contact', async (req, res) => {
 
         const to = process.env.CONTACT_TO || process.env.SMTP_USER;
         const from = process.env.CONTACT_FROM || process.env.SMTP_USER;
+
+        if (!to || !from) {
+            return res
+                .status(500)
+                .json({ ok: false, error: 'El correo del servidor no está configurado.' });
+        }
 
         const subject = `Nuevo mensaje de contacto: ${safeName}`;
 
@@ -157,3 +158,11 @@ ${safeMessage}
     }
 });
 
+// 404 page: must stay after static files and API routes.
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(PROJECT_ROOT, '404.html'));
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor de Construcciones GUCA corriendo en http://localhost:${PORT}`);
+});
