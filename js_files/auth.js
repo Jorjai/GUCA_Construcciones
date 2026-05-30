@@ -77,4 +77,33 @@ document.addEventListener("DOMContentLoaded", () => {
             loginMessage.className = "msg error";
         }
     });
+
+    const googleLoginBtn = document.getElementById("googleLoginBtn");
+
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener("click", async () => {
+            if (loginMessage) {
+                loginMessage.textContent = "Redirigiendo a Google...";
+                loginMessage.className = "msg";
+            }
+
+            const { error } = await GucaSupabase.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: "https://gucaconstrucciones.netlify.app/admin.html"
+                }
+            });
+
+            if (error) {
+                console.error(error);
+
+                if (loginMessage) {
+                    loginMessage.textContent = "No se pudo iniciar sesión con Google.";
+                    loginMessage.className = "msg error";
+                } else {
+                    alert("No se pudo iniciar sesión con Google.");
+                }
+            }
+        });
+    }
 });
