@@ -2647,3 +2647,345 @@ footer {
         height: 110px;
     }
 }
+
+/* =========================
+   Public pages mobile polish
+   ========================= */
+
+@media (max-width: 760px) {
+    /* Header */
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+
+    .nav-bar {
+        padding: 0.75rem 0;
+    }
+
+    .nav-bar nav {
+        width: 100%;
+        order: 3;
+    }
+
+    .nav-bar nav ul {
+        width: 100%;
+        justify-content: center;
+        row-gap: 0.4rem;
+    }
+
+    .nav-bar nav a {
+        font-size: 0.9rem;
+    }
+
+    /* Homepage hero */
+    .hero {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    .hero .container,
+    .hero-grid,
+    .supply-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+    }
+
+    .hero h1,
+    .supply-hero h1 {
+        font-size: clamp(2.1rem, 11vw, 3.2rem);
+        line-height: 1.05;
+    }
+
+    .hero p,
+    .supply-hero p {
+        font-size: 1rem;
+    }
+
+    .hero-cta {
+        gap: 0.75rem;
+    }
+
+    .hero-cta .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Home services/projects */
+    .services-grid,
+    .projects-grid,
+    .supply-category-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card {
+        border-radius: 1.1rem;
+    }
+
+    .service-quote-card,
+    .project-card,
+    .supply-category-card {
+        padding: 1rem;
+    }
+
+    .project-card img,
+    .project-gallery-main img {
+        height: 210px;
+        object-fit: cover;
+    }
+
+    /* Suministros */
+    .supply-hero {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    .supply-hero-panel {
+        padding: 1.2rem;
+        border-radius: 1.2rem;
+    }
+
+    .supply-mini-list {
+        grid-template-columns: 1fr;
+    }
+
+    .inventory-toolbar {
+        padding: 1rem;
+        border-radius: 1.1rem;
+    }
+
+    .inventory-card {
+        border-radius: 1.1rem;
+    }
+
+    .inventory-card h3 {
+        font-size: 1.15rem;
+    }
+
+    .inventory-meta-list {
+        font-size: 0.9rem;
+    }
+
+    .inventory-quote-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .payment-preview-card {
+        padding: 1.2rem;
+        border-radius: 1.2rem;
+    }
+
+    .contact-layout {
+        gap: 1.25rem;
+    }
+
+    .contact-layout form,
+    .contact-info {
+        padding: 1.1rem;
+        border-radius: 1.1rem;
+    }
+
+    /* Forms */
+    .field {
+        margin-bottom: 0.85rem;
+    }
+
+    input,
+    select,
+    textarea {
+        min-height: 46px;
+    }
+
+    textarea {
+        min-height: 130px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Header compact */
+    .logo img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .logo-title {
+        font-size: 0.95rem;
+        letter-spacing: 0.12em;
+    }
+
+    .nav-bar nav a {
+        font-size: 0.82rem;
+    }
+
+    #theme-toggle,
+    #adminLogoutBtn {
+        min-height: 42px;
+        padding: 0.55rem 0.85rem;
+    }
+
+    /* Section spacing */
+    section {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+
+    .section-intro {
+        font-size: 0.95rem;
+    }
+
+    h2 {
+        font-size: 1.65rem;
+        line-height: 1.15;
+    }
+
+    /* Homepage */
+    .hero h1,
+    .supply-hero h1 {
+        font-size: clamp(2rem, 12vw, 2.8rem);
+    }
+
+    .hero p,
+    .supply-hero p {
+        font-size: 0.95rem;
+    }
+
+    .project-card img,
+    .project-gallery-main img {
+        height: 180px;
+    }
+
+    /* Suministros cards */
+    .inventory-image-wrap,
+    .inventory-icon {
+        height: 150px;
+    }
+
+    .inventory-card-top {
+        gap: 0.75rem;
+    }
+
+    .inventory-status {
+        font-size: 0.85rem;
+    }
+
+    .supply-category-card {
+        text-align: left;
+    }
+
+    /* Contact */
+    .contact-layout form,
+    .contact-info {
+        padding: 1rem;
+    }
+
+    .contact-info .info-block {
+        overflow-wrap: anywhere;
+    }
+
+    /* Footer */
+    .footer-icons {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* =========================
+   Mobile hamburger menu
+   ========================= */
+
+.mobile-menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 42px;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.mobile-menu-toggle i {
+    font-size: 1rem;
+}
+
+@media (max-width: 760px) {
+    .nav-bar {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 0.65rem;
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex;
+    }
+
+    .nav-bar nav {
+        display: none;
+        grid-column: 1 / -1;
+        width: 100%;
+        order: 5;
+    }
+
+    .nav-bar.nav-open nav {
+        display: block;
+    }
+
+    .nav-bar nav ul {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+        width: 100%;
+        padding: 0.85rem;
+        margin-top: 0.75rem;
+        border-radius: 1rem;
+        background: rgba(15, 23, 42, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 35px rgba(15, 23, 42, 0.25);
+    }
+
+    .nav-bar nav a {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 0.85rem;
+        border-radius: 0.75rem;
+        color: #ffffff;
+        text-align: left;
+        font-size: 0.95rem;
+        font-weight: 800;
+    }
+
+    .nav-bar nav a:hover,
+    .nav-bar nav a:focus {
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    #theme-toggle {
+        min-width: auto;
+        padding: 0.55rem 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-menu-toggle span {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        width: 42px;
+        padding: 0;
+    }
+
+    .nav-bar {
+        grid-template-columns: 1fr 42px auto;
+    }
+}

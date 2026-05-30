@@ -16,6 +16,28 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
         });
     });
 
+    const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
+    const navBar = document.querySelector(".nav-bar");
+
+    if (mobileMenuToggle && navBar) {
+        mobileMenuToggle.addEventListener("click", () => {
+            navBar.classList.toggle("nav-open");
+
+            const isOpen = navBar.classList.contains("nav-open");
+
+            mobileMenuToggle.innerHTML = isOpen
+                ? '<i class="fa-solid fa-xmark"></i><span>Cerrar</span>'
+                : '<i class="fa-solid fa-bars"></i><span>Menú</span>';
+        });
+
+        document.querySelectorAll(".nav-bar nav a").forEach((link) => {
+            link.addEventListener("click", () => {
+                navBar.classList.remove("nav-open");
+                mobileMenuToggle.innerHTML = '<i class="fa-solid fa-bars"></i><span>Menú</span>';
+            });
+        });
+    }
+
     /* ======================
             Hero gallery grid (auto, rotates items)
     ====================== */
