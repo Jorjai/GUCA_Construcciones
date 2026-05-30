@@ -2989,3 +2989,111 @@ footer {
         grid-template-columns: 1fr 42px auto;
     }
 }
+
+/* =========================
+   Success pages
+   ========================= */
+
+.success-page {
+    min-height: calc(100vh - 90px);
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+    background:
+            radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 32rem),
+            linear-gradient(135deg, var(--primary), #1e3a8a);
+}
+
+.success-card {
+    max-width: 760px;
+    margin-inline: auto;
+    padding: 3rem;
+    border-radius: 2rem;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+    text-align: center;
+}
+
+.success-icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 2rem;
+}
+
+.supply-success-icon {
+    background: #fff7ed;
+    color: #f97316;
+}
+
+.success-eyebrow {
+    margin-bottom: 0.65rem;
+    color: var(--primary);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.82rem;
+}
+
+.success-card h1 {
+    margin-bottom: 1rem;
+    color: var(--text);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+}
+
+.success-card p {
+    max-width: 620px;
+    margin: 0 auto;
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.success-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.success-actions .btn {
+    min-width: 190px;
+    justify-content: center;
+}
+
+[data-theme="dark"] .success-card {
+    background: rgba(15, 23, 42, 0.96);
+}
+
+[data-theme="dark"] .success-card h1 {
+    color: #f8fafc;
+}
+
+@media (max-width: 640px) {
+    .success-page {
+        padding: 2rem 0;
+        align-items: flex-start;
+    }
+
+    .success-card {
+        padding: 2rem 1.25rem;
+        border-radius: 1.35rem;
+    }
+
+    .success-actions {
+        flex-direction: column;
+    }
+
+    .success-actions .btn {
+        width: 100%;
+    }
+}
