@@ -1,5 +1,19 @@
 // Main JS
-document.addEventListener('DOMContentLoaded', async () => {    /* ======================
+document.addEventListener('DOMContentLoaded', async () => {
+    const tr = (key, params = {}, fallback = '') => window.GucaI18n?.t(key, params, fallback) || fallback || key;
+    const currentLang = () => window.GucaI18n?.getLanguage?.() || 'es';
+    const translatedField = (item, field) => {
+        const lang = currentLang();
+        if (lang !== 'es') {
+            const translated = item[`${field}_${lang}`];
+            if (translated !== null && translated !== undefined && String(translated).trim() !== '') {
+                return translated;
+            }
+        }
+        return item[field] || '';
+    };
+
+    /* ======================
        Smooth scroll with header offset
        ====================== */
     const headerEl = document.querySelector('header');
@@ -26,14 +40,14 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
             const isOpen = navBar.classList.contains("nav-open");
 
             mobileMenuToggle.innerHTML = isOpen
-                ? '<i class="fa-solid fa-xmark"></i><span>Cerrar</span>'
-                : '<i class="fa-solid fa-bars"></i><span>Menú</span>';
+                ? `<i class="fa-solid fa-xmark"></i><span>${tr('nav.close', {}, 'Cerrar')}</span>`
+                : `<i class="fa-solid fa-bars"></i><span>${tr('nav.menu', {}, 'Menú')}</span>`;
         });
 
         document.querySelectorAll(".nav-bar nav a").forEach((link) => {
             link.addEventListener("click", () => {
                 navBar.classList.remove("nav-open");
-                mobileMenuToggle.innerHTML = '<i class="fa-solid fa-bars"></i><span>Menú</span>';
+                mobileMenuToggle.innerHTML = `<i class="fa-solid fa-bars"></i><span>${tr('nav.menu', {}, 'Menú')}</span>`;
             });
         });
     }
@@ -191,7 +205,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
             // ---- REQUIRED ----
             if (!name || !email || !phoneNumberRaw || !message) {
                 e.preventDefault();
-                msgEl.textContent = 'Por favor completa los campos obligatorios.';
+                msgEl.textContent = tr('home.formMessages.required', {}, 'Por favor completa los campos obligatorios.');
                 msgEl.className = 'msg error';
                 return;
             }
@@ -200,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
             const nameRegex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?:\s+[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)+$/;
             if (!nameRegex.test(name)) {
                 e.preventDefault();
-                msgEl.textContent = 'Escribe tu nombre y apellido usando solo letras.';
+                msgEl.textContent = tr('home.formMessages.invalidName', {}, 'Escribe tu nombre y apellido usando solo letras.');
                 msgEl.className = 'msg error';
                 return;
             }
@@ -209,7 +223,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 e.preventDefault();
-                msgEl.textContent = 'Escribe un correo electrónico válido.';
+                msgEl.textContent = tr('home.formMessages.invalidEmail', {}, 'Escribe un correo electrónico válido.');
                 msgEl.className = 'msg error';
                 return;
             }
@@ -218,7 +232,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
             const phoneDigits = phoneNumberRaw.replace(/\D/g, '');
             if (phoneDigits.length !== 10) {
                 e.preventDefault();
-                msgEl.textContent = 'El teléfono debe tener 10 dígitos (solo números).';
+                msgEl.textContent = tr('home.formMessages.invalidPhone', {}, 'El teléfono debe tener 10 dígitos (solo números).');
                 msgEl.className = 'msg error';
                 return;
             }
@@ -240,9 +254,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
 
             if (stats.count >= MAX_PER_DAY) {
                 e.preventDefault();
-                msgEl.textContent =
-                    `Has alcanzado el límite de ${MAX_PER_DAY} mensajes por hoy. ` +
-                    'Por favor inténtalo mañana o contáctanos por teléfono.';
+                msgEl.textContent = tr('home.formMessages.dailyLimit', { max: MAX_PER_DAY }, `Has alcanzado el límite de ${MAX_PER_DAY} mensajes por hoy. Por favor inténtalo mañana o contáctanos por teléfono.`);
                 msgEl.className = 'msg error';
                 return;
             }
@@ -252,7 +264,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
             saveStats(stats);
 
             // Optional tiny feedback while Netlify/reCAPTCHA works
-            msgEl.textContent = 'Enviando mensaje...';
+            msgEl.textContent = tr('common.sending', {}, 'Enviando mensaje...');
             msgEl.className = 'msg';
 
             if (typeof GucaSupabase !== "undefined") {
@@ -293,7 +305,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
                     .then(([supabaseResult, netlifyResult]) => {
                         if (supabaseResult.error) {
                             console.error(supabaseResult.error);
-                            msgEl.textContent = "No se pudo guardar la solicitud. Intenta de nuevo.";
+                            msgEl.textContent = tr('common.saveError', {}, 'No se pudo guardar la solicitud. Intenta de nuevo.');
                             msgEl.className = "msg error";
                             return;
                         }
@@ -306,7 +318,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
                     })
                     .catch((error) => {
                         console.error(error);
-                        msgEl.textContent = "No se pudo enviar la solicitud. Intenta de nuevo.";
+                        msgEl.textContent = tr('common.submitError', {}, 'No se pudo enviar la solicitud. Intenta de nuevo.');
                         msgEl.className = "msg error";
                     });
             }
@@ -372,10 +384,10 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
 
         navigator.clipboard.writeText(EMAIL)
             .then(() => {
-                showToast('Correo copiado al portapapeles');
+                showToast(tr('common.emailCopied', {}, 'Correo copiado al portapapeles'));
             })
             .catch(() => {
-                showToast('No se pudo copiar el correo');
+                showToast(tr('common.emailCopyError', {}, 'No se pudo copiar el correo'));
             });
     }
 
@@ -429,7 +441,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
                 arr.sort((a, b) => b.year - a.year);
             } else if (currentSort === 'client') {
                 arr.sort((a, b) =>
-                    (a.client || '').localeCompare(b.client || '', 'es')
+                    (a.client || '').localeCompare(b.client || '', currentLang())
                 );
             }
             // 'default' = original order
@@ -497,7 +509,7 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
                 if (mediaList.length > 1) {
                     const badge = document.createElement("span");
                     badge.className = "project-gallery-badge";
-                    badge.textContent = `${mediaList.length} fotos`;
+                    badge.textContent = tr('home.projects.photos', { count: mediaList.length }, `${mediaList.length} fotos`);
                     thumb.appendChild(badge);
 
                     let intervalId = null;
@@ -556,9 +568,9 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
                     : project.amount;
 
             metaList.innerHTML = `
-                <li><strong>Año:</strong> ${project.year}</li>
-                <li><strong>Cliente:</strong> ${project.client}</li>
-                <li><strong>Importe ejecutado:</strong> ${amountFormatted}</li>
+                <li><strong>${tr('home.projects.year', {}, 'Año:')}</strong> ${project.year}</li>
+                <li><strong>${tr('home.projects.projectClient', {}, 'Cliente:')}</strong> ${project.client}</li>
+                <li><strong>${tr('home.projects.amount', {}, 'Importe ejecutado:')}</strong> ${amountFormatted}</li>
             `;
 
             article.appendChild(metaList);
@@ -586,13 +598,11 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
             // --- status text ---
             if (projectsStatus) {
                 if (!total) {
-                    projectsStatus.textContent = 'No hay obras para mostrar.';
+                    projectsStatus.textContent = tr('home.projects.empty', {}, 'No hay obras para mostrar.');
                 } else if (isExpanded || effectiveVisible === total) {
-                    projectsStatus.textContent = `Mostrando todas las ${total} obras.`;
+                    projectsStatus.textContent = tr('home.projects.all', { total }, `Mostrando todas las ${total} obras.`);
                 } else {
-                    projectsStatus.textContent =
-                        `Mostrando primeras ${effectiveVisible} de ${total} obras. ` +
-                        `Usa “Ver más” para ver el resto.`;
+                    projectsStatus.textContent = tr('home.projects.first', { visible: effectiveVisible, total }, `Mostrando primeras ${effectiveVisible} de ${total} obras. Usa “Ver más” para ver el resto.`);
                 }
             }
 
@@ -603,10 +613,12 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
                     loadMoreBtn.style.display = 'none';
                 } else {
                     loadMoreBtn.style.display = 'inline-flex';
-                    loadMoreBtn.textContent = isExpanded ? 'Ver menos' : 'Ver más obras';
+                    loadMoreBtn.textContent = isExpanded ? tr('home.projects.less', {}, 'Ver menos') : tr('home.projects.more', {}, 'Ver más obras');
                 }
             }
         };
+
+        document.addEventListener('guca:languageChanged', renderProjects);
 
         // --- event handlers ---
 
@@ -648,15 +660,17 @@ document.addEventListener('DOMContentLoaded', async () => {    /* ==============
                 gallery = [project.image_url];
             }
 
+            const title = translatedField(project, 'title');
+
             return {
-                category: project.category,
-                title: project.title,
-                description: project.description,
-                client: project.client || "No especificado",
+                category: translatedField(project, 'category'),
+                title,
+                description: translatedField(project, 'description'),
+                client: translatedField(project, 'client') || tr('home.projects.unspecified', {}, 'No especificado'),
                 year: project.project_year || "",
                 amount: project.amount,
                 gallery,
-                alt: project.alt || project.title
+                alt: translatedField(project, 'alt') || title
             };
         };
 

@@ -1,6 +1,7 @@
 // js_files/suministros.js
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const tr = (key, params = {}, fallback = "") => window.GucaI18n?.t(key, params, fallback) || fallback || key;
     const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
     const navBar = document.querySelector(".nav-bar");
 
@@ -11,14 +12,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             const isOpen = navBar.classList.contains("nav-open");
 
             mobileMenuToggle.innerHTML = isOpen
-                ? '<i class="fa-solid fa-xmark"></i><span>Cerrar</span>'
-                : '<i class="fa-solid fa-bars"></i><span>Menú</span>';
+                ? `<i class="fa-solid fa-xmark"></i><span>${tr('nav.close', {}, 'Cerrar')}</span>`
+                : `<i class="fa-solid fa-bars"></i><span>${tr('nav.menu', {}, 'Menú')}</span>`;
         });
 
         document.querySelectorAll(".nav-bar nav a").forEach((link) => {
             link.addEventListener("click", () => {
                 navBar.classList.remove("nav-open");
-                mobileMenuToggle.innerHTML = '<i class="fa-solid fa-bars"></i><span>Menú</span>';
+                mobileMenuToggle.innerHTML = `<i class="fa-solid fa-bars"></i><span>${tr('nav.menu', {}, 'Menú')}</span>`;
             });
         });
     }
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const money = value =>
         typeof value === "number"
             ? value.toLocaleString("es-MX", { style: "currency", currency: "MXN" })
-            : "A cotizar";
+            : tr('supplies.specialQuote', {}, 'A cotizar');
 
     const normalize = value =>
         String(value || "")
@@ -78,6 +79,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             .replaceAll("'", "&#039;");
     };
 
+    const currentLang = () => window.GucaI18n?.getLanguage?.() || "es";
+
+    const translatedField = (item, field) => {
+        const lang = currentLang();
+
+        if (lang !== "es") {
+            const translated = item[`${field}_${lang}`];
+
+            if (translated !== null && translated !== undefined && String(translated).trim() !== "") {
+                return translated;
+            }
+        }
+
+        return item[field] || "";
+    };
+
+
     async function loadInventoryFromSupabase() {
         categoryLabels = { ...fallbackCategoryLabels };
 
@@ -89,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const { data: categories, error: categoriesError } = await GucaSupabase
             .from("supply_categories")
-            .select("slug, name, is_active")
+            .select("slug, name, name_en, is_active")
             .eq("is_active", true)
             .order("display_order", { ascending: true });
 
@@ -97,13 +115,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             categoryLabels = {};
 
             categories.forEach(category => {
-                categoryLabels[category.slug] = category.name;
+                categoryLabels[category.slug] = translatedField(category, "name");
             });
         }
 
         const { data, error } = await GucaSupabase
             .from("inventory_items")
-            .select("serial, category_slug, type, name, price, unit, status, icon, image_url, description, is_active")
+            .select("serial, category_slug, type, name, price, unit, status, icon, image_url, description, type_en, name_en, unit_en, status_en, description_en, is_active")
             .eq("is_active", true)
             .order("serial", { ascending: true });
 
@@ -117,14 +135,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         inventory = data.map(item => ({
             serial: item.serial,
             category: item.category_slug,
-            type: item.type || "General",
-            name: item.name,
+            type: translatedField(item, "type") || "General",
+            name: translatedField(item, "name"),
             price: item.price === null ? null : Number(item.price),
-            unit: item.unit || "pieza",
-            status: item.status || "Cotizable",
+            unit: translatedField(item, "unit") || "pieza",
+            status: translatedField(item, "status") || "Cotizable",
             icon: item.icon || "fa-box",
             imageUrl: item.image_url || "",
-            description: item.description || ""
+            description: translatedField(item, "description")
         }));
     }
 
@@ -144,7 +162,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const current = typeFilter.value;
 
         typeFilter.innerHTML =
-            '<option value="all">Todos</option>' +
+            `<option value="all">${tr('supplies.allTypes', {}, 'Todos')}</option>` +
             types.map(type => `<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`).join("");
 
         if (types.includes(current)) {
@@ -196,13 +214,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         article.innerHTML = `
             <div class="inventory-card-top">
                     ${item.imageUrl
-                ? `<span class="inventory-image-wrap">
+            ? `<span class="inventory-image-wrap">
                 <img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" class="inventory-image" />
                    </span>`
-                        : `<span class="inventory-icon">
+            : `<span class="inventory-icon">
                         <i class="fa-solid ${escapeHtml(item.icon)}"></i>
                    </span>`
-            }
+        }
 
             <div class="pill">${escapeHtml(categoryName)}</div>
 
@@ -210,13 +228,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p>${escapeHtml(item.description)}</p>
 
             <ul class="project-meta-list inventory-meta-list">
-                <li><strong>Tipo:</strong> ${escapeHtml(item.type)}</li>
-                <li><strong>Precio ref.:</strong> ${money(item.price)} / ${escapeHtml(item.unit)}</li>
-                <li><strong>Estado:</strong> ${escapeHtml(item.status)}</li>
+                <li><strong>${tr('supplies.type', {}, 'Tipo')}:</strong> ${escapeHtml(item.type)}</li>
+                <li><strong>${tr('supplies.priceRef', {}, 'Precio ref.')}:</strong> ${money(item.price)} / ${escapeHtml(item.unit)}</li>
+                <li><strong>${tr('supplies.statusLabel', {}, 'Estado')}:</strong> ${escapeHtml(item.status)}</li>
             </ul>
 
             <button type="button" class="btn btn-primary inventory-quote-btn" data-serial="${escapeHtml(item.serial)}">
-                Cotizar este producto
+                ${tr('supplies.quoteProduct', {}, 'Cotizar este producto')}
             </button>
         `;
 
@@ -227,7 +245,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (quantity && !quantity.value) quantity.value = 1;
 
             if (supplyMessage && !supplyMessage.value.trim()) {
-                supplyMessage.value = `Hola, quiero cotizar el producto ${item.serial} - ${item.name}. Cantidad estimada: `;
+                supplyMessage.value = tr('supplies.selectedMessage', { product: `${item.serial} - ${item.name}` }, `Hola, quiero cotizar el producto ${item.serial} - ${item.name}. Cantidad estimada: `);
             }
 
             document.getElementById("supply-contact")?.scrollIntoView({ behavior: "smooth" });
@@ -249,14 +267,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         inventoryGrid.innerHTML = "";
 
         if (inventoryStatus) {
-            inventoryStatus.textContent = `Mostrando ${visibleItems.length} de ${totalItems} productos.`;
+            inventoryStatus.textContent = tr('supplies.status', { shown: visibleItems.length, total: totalItems }, `Mostrando ${visibleItems.length} de ${totalItems} productos.`);
         }
 
         if (!items.length) {
             inventoryGrid.innerHTML = `
             <div class="card empty-inventory-card">
-                <h3>No encontramos productos con ese filtro</h3>
-                <p>Prueba otra palabra o usa la categoría “Todas”.</p>
+                <h3>${tr('supplies.emptyInventory', {}, 'No encontramos productos con ese filtro')}</h3>
+                <p>${tr('supplies.emptyInventoryHelp', {}, 'Prueba otra palabra o usa la categoría “Todas”.')}</p>
             </div>
         `;
 
@@ -276,11 +294,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             } else {
                 loadMoreBtn.style.display = "inline-flex";
                 loadMoreBtn.textContent = inventoryExpanded
-                    ? "Ver menos"
-                    : "Ver más productos";
+                    ? tr('supplies.loadLess', {}, 'Ver menos')
+                    : tr('supplies.loadMore', {}, 'Ver más productos');
             }
         }
     };
+
+    document.addEventListener('guca:languageChanged', () => {
+        updateTypeFilter();
+        renderInventory();
+    });
 
     const scrollAndFocus = (targetId, focusEl) => {
         document.getElementById(targetId)?.scrollIntoView({
@@ -389,19 +412,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!name || !email || !phone || !message) {
                 event.preventDefault();
-                formMsg.textContent = "Por favor completa los campos obligatorios.";
+                formMsg.textContent = tr('home.formMessages.required', {}, 'Por favor completa los campos obligatorios.');
                 formMsg.className = "msg error";
                 return;
             }
 
             if (!emailRegex.test(email)) {
                 event.preventDefault();
-                formMsg.textContent = "Escribe un correo electrónico válido.";
+                formMsg.textContent = tr('home.formMessages.invalidEmail', {}, 'Escribe un correo electrónico válido.');
                 formMsg.className = "msg error";
                 return;
             }
 
-            formMsg.textContent = "Enviando solicitud...";
+            formMsg.textContent = tr('common.sending', {}, 'Enviando solicitud...');
             formMsg.className = "msg";
 
             if (typeof GucaSupabase !== "undefined") {
@@ -447,7 +470,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     .then(([supabaseResult, netlifyResult]) => {
                         if (supabaseResult.error) {
                             console.error(supabaseResult.error);
-                            formMsg.textContent = "No se pudo guardar la solicitud. Intenta de nuevo.";
+                            formMsg.textContent = tr('common.saveError', {}, 'No se pudo guardar la solicitud. Intenta de nuevo.');
                             formMsg.className = "msg error";
                             return;
                         }
@@ -460,7 +483,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     })
                     .catch((error) => {
                         console.error(error);
-                        formMsg.textContent = "No se pudo enviar la solicitud. Intenta de nuevo.";
+                        formMsg.textContent = tr('common.submitError', {}, 'No se pudo enviar la solicitud. Intenta de nuevo.');
                         formMsg.className = "msg error";
                     });
             }
@@ -513,8 +536,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         navigator.clipboard
             .writeText(supplyEmail)
-            .then(() => showToast("Correo de suministros copiado"))
-            .catch(() => showToast("No se pudo copiar el correo"));
+            .then(() => showToast(tr('supplies.supplyEmailCopied', {}, 'Correo de suministros copiado')))
+            .catch(() => showToast(tr('supplies.supplyEmailCopyError', {}, 'No se pudo copiar el correo')));
     };
 
     if (copySupplyEmailBtn) copySupplyEmailBtn.addEventListener("click", copyEmail);

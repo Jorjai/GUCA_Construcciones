@@ -942,6 +942,37 @@ document.addEventListener("DOMContentLoaded", async () => {
                     >${service ? escapeHtml(service.description) : ""}</textarea>
                 </div>
 
+                <hr class="login-divider" />
+                <p class="login-note"><strong>Traducción en inglés</strong> (opcional). Si se deja vacío, el sitio mostrará el texto en español.</p>
+
+                <div class="field">
+                    <label for="servicePillEn">Etiqueta en inglés</label>
+                    <input
+                        id="servicePillEn"
+                        type="text"
+                        value="${service ? escapeAttribute(service.pill_en || "") : ""}"
+                        placeholder="Example: Construction"
+                    />
+                </div>
+
+                <div class="field">
+                    <label for="serviceTitleEn">Título en inglés</label>
+                    <input
+                        id="serviceTitleEn"
+                        type="text"
+                        value="${service ? escapeAttribute(service.title_en || "") : ""}"
+                        placeholder="Example: New construction"
+                    />
+                </div>
+
+                <div class="field">
+                    <label for="serviceDescriptionEn">Descripción en inglés</label>
+                    <textarea
+                        id="serviceDescriptionEn"
+                        placeholder="Describe the service in English."
+                    >${service ? escapeHtml(service.description_en || "") : ""}</textarea>
+                </div>
+
                 <div class="field">
                     <label for="serviceOrder">Orden</label>
                     <input
@@ -992,6 +1023,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 pill: document.getElementById("servicePill").value.trim(),
                 title: document.getElementById("serviceTitle").value.trim(),
                 description: document.getElementById("serviceDescription").value.trim(),
+                pill_en: document.getElementById("servicePillEn").value.trim() || null,
+                title_en: document.getElementById("serviceTitleEn").value.trim() || null,
+                description_en: document.getElementById("serviceDescriptionEn").value.trim() || null,
                 display_order: Number(document.getElementById("serviceOrder").value),
                 is_active: document.getElementById("serviceActive").checked
             };
@@ -1188,6 +1222,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                 >${category ? escapeHtml(category.description) : ""}</textarea>
             </div>
 
+            <hr class="login-divider" />
+            <p class="login-note"><strong>Traducción en inglés</strong> (opcional). Si se deja vacío, el sitio mostrará el texto en español.</p>
+
+            <div class="field">
+                <label for="categoryNameEn">Nombre visible en inglés</label>
+                <input
+                    id="categoryNameEn"
+                    type="text"
+                    value="${category ? escapeAttribute(category.name_en || "") : ""}"
+                    placeholder="Example: Uniforms"
+                />
+            </div>
+
+            <div class="field">
+                <label for="categoryDescriptionEn">Descripción en inglés</label>
+                <textarea
+                    id="categoryDescriptionEn"
+                    placeholder="Short description in English."
+                >${category ? escapeHtml(category.description_en || "") : ""}</textarea>
+            </div>
+
             <div class="field">
                 <label for="categoryIcon">Icono Font Awesome</label>
                 <input
@@ -1258,6 +1313,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 slug: slugValue,
                 name: document.getElementById("categoryName").value.trim(),
                 description: document.getElementById("categoryDescription").value.trim(),
+                name_en: document.getElementById("categoryNameEn").value.trim() || null,
+                description_en: document.getElementById("categoryDescriptionEn").value.trim() || null,
                 icon: document.getElementById("categoryIcon").value.trim(),
                 display_order: Number(document.getElementById("categoryOrder").value),
                 is_active: document.getElementById("categoryActive").checked
@@ -1350,17 +1407,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             <div>
                 <div class="inventory-card-top" style="justify-content:flex-start;">
                     ${item.image_url
-                        ? `<span class="inventory-image-wrap">
+            ? `<span class="inventory-image-wrap">
                         <img
                             src="${escapeAttribute(item.image_url)}"
                             alt="${escapeAttribute(item.name)}"
                             class="inventory-image"
                         />
                        </span>`
-                            : `<span class="inventory-icon">
+            : `<span class="inventory-icon">
                             <i class="fa-solid ${escapeAttribute(item.icon || "fa-box")}"></i>
                        </span>`
-                    }
+        }
                     <span class="inventory-serial">${escapeHtml(item.serial)}</span>
                 </div>
 
@@ -1778,6 +1835,57 @@ document.addEventListener("DOMContentLoaded", async () => {
                     id="inventoryDescription"
                     placeholder="Describe el producto."
                 >${item ? escapeHtml(item.description || "") : ""}</textarea>
+            </div>
+
+            <hr class="login-divider" />
+            <p class="login-note"><strong>Traducción en inglés</strong> (opcional). Si se deja vacío, el sitio mostrará el texto en español.</p>
+
+            <div class="field">
+                <label for="inventoryNameEn">Nombre en inglés</label>
+                <input
+                    id="inventoryNameEn"
+                    type="text"
+                    value="${item ? escapeAttribute(item.name_en || "") : ""}"
+                    placeholder="Example: Reflective vest"
+                />
+            </div>
+
+            <div class="field">
+                <label for="inventoryTypeEn">Tipo en inglés</label>
+                <input
+                    id="inventoryTypeEn"
+                    type="text"
+                    value="${item ? escapeAttribute(item.type_en || "") : ""}"
+                    placeholder="Example: Safety"
+                />
+            </div>
+
+            <div class="field">
+                <label for="inventoryDescriptionEn">Descripción en inglés</label>
+                <textarea
+                    id="inventoryDescriptionEn"
+                    placeholder="Product description in English."
+                >${item ? escapeHtml(item.description_en || "") : ""}</textarea>
+            </div>
+
+            <div class="field">
+                <label for="inventoryUnitEn">Unidad en inglés</label>
+                <input
+                    id="inventoryUnitEn"
+                    type="text"
+                    value="${item ? escapeAttribute(item.unit_en || "") : ""}"
+                    placeholder="Example: piece"
+                />
+            </div>
+
+            <div class="field">
+                <label for="inventoryStatusEn">Estado en inglés</label>
+                <input
+                    id="inventoryStatusEn"
+                    type="text"
+                    value="${item ? escapeAttribute(item.status_en || "") : ""}"
+                    placeholder="Example: Quotable"
+                />
             </div>
 
             <div class="field">
@@ -2205,6 +2313,57 @@ document.addEventListener("DOMContentLoaded", async () => {
                 />
             </div>
 
+            <hr class="login-divider" />
+            <p class="login-note"><strong>Traducción en inglés</strong> (opcional). Si se deja vacío, el sitio mostrará el texto en español.</p>
+
+            <div class="field">
+                <label for="projectCategoryEn">Categoría en inglés</label>
+                <input
+                    id="projectCategoryEn"
+                    type="text"
+                    value="${project ? escapeAttribute(project.category_en || "") : ""}"
+                    placeholder="Example: Civil works"
+                />
+            </div>
+
+            <div class="field">
+                <label for="projectTitleEn">Título en inglés</label>
+                <input
+                    id="projectTitleEn"
+                    type="text"
+                    value="${project ? escapeAttribute(project.title_en || "") : ""}"
+                    placeholder="Example: Industrial maintenance project"
+                />
+            </div>
+
+            <div class="field">
+                <label for="projectDescriptionEn">Descripción en inglés</label>
+                <textarea
+                    id="projectDescriptionEn"
+                    placeholder="Project description in English."
+                >${project ? escapeHtml(project.description_en || "") : ""}</textarea>
+            </div>
+
+            <div class="field">
+                <label for="projectClientEn">Cliente en inglés</label>
+                <input
+                    id="projectClientEn"
+                    type="text"
+                    value="${project ? escapeAttribute(project.client_en || "") : ""}"
+                    placeholder="Example: Private client"
+                />
+            </div>
+
+            <div class="field">
+                <label for="projectAltEn">Texto alternativo en inglés</label>
+                <input
+                    id="projectAltEn"
+                    type="text"
+                    value="${project ? escapeAttribute(project.alt_en || "") : ""}"
+                    placeholder="Example: Industrial construction work"
+                />
+            </div>
+
             <div class="field">
                 <label for="projectYear">Año</label>
                 <input
@@ -2428,6 +2587,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 title: document.getElementById("projectTitle").value.trim(),
                 description: document.getElementById("projectDescription").value.trim(),
                 client: document.getElementById("projectClient").value.trim(),
+                category_en: document.getElementById("projectCategoryEn").value.trim() || null,
+                title_en: document.getElementById("projectTitleEn").value.trim() || null,
+                description_en: document.getElementById("projectDescriptionEn").value.trim() || null,
+                client_en: document.getElementById("projectClientEn").value.trim() || null,
+                alt_en: document.getElementById("projectAltEn").value.trim() || null,
                 project_year: Number(document.getElementById("projectYear").value),
                 amount: rawAmount === "" ? null : Number(rawAmount),
                 gallery: galleryArray,

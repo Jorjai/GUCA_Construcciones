@@ -4,6 +4,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadHomeServices();
 });
 
+function tr(key, params = {}, fallback = '') {
+    return window.GucaI18n?.t(key, params, fallback) || fallback || key;
+}
+
+function currentLang() {
+    return window.GucaI18n?.getLanguage?.() || 'es';
+}
+
+function translatedField(item, field) {
+    const lang = currentLang();
+    if (lang !== 'es') {
+        const translated = item[`${field}_${lang}`];
+        if (translated !== null && translated !== undefined && String(translated).trim() !== '') {
+            return translated;
+        }
+    }
+    return item[field] || '';
+}
+
 async function loadHomeServices() {
     const servicesGrid = document.getElementById("servicesGrid");
 
@@ -16,7 +35,7 @@ async function loadHomeServices() {
 
     const { data, error } = await GucaSupabase
         .from("service_cards")
-        .select("pill, title, description, display_order, is_active")
+        .select("pill, title, description, pill_en, title_en, description_en, display_order, is_active")
         .eq("is_active", true)
         .order("display_order", { ascending: true });
 
@@ -30,23 +49,31 @@ async function loadHomeServices() {
         return;
     }
 
-    servicesGrid.innerHTML = data.map((service) => `
+    servicesGrid.innerHTML = data.map((service) => {
+        const pill = translatedField(service, 'pill');
+        const title = translatedField(service, 'title');
+        const description = translatedField(service, 'description');
+
+        return `
         <article
             class="card service-quote-card"
             tabindex="0"
             role="button"
-            data-service-title="${escapeAttribute(service.title)}"
-            data-service-pill="${escapeAttribute(service.pill)}"
+            data-service-title="${escapeAttribute(title)}"
+            data-service-pill="${escapeAttribute(pill)}"
         >
-            <div class="pill">${escapeHtml(service.pill)}</div>
-            <h3>${escapeHtml(service.title)}</h3>
-            <p>${escapeHtml(service.description)}</p>
+            <div class="pill">${escapeHtml(pill)}</div>
+            <h3>${escapeHtml(title)}</h3>
+            <p>${escapeHtml(description)}</p>
 
             <span class="service-card-action">
-                Solicitar cotización →
+                ${tr("home.services.action", {}, "Solicitar cotización →")}
             </span>
         </article>
-    `).join("");
+    `;
+    }).join("");
+
+    window.GucaI18n?.translatePage(document);
 
     document.querySelectorAll(".service-quote-card").forEach((card) => {
         const handleServiceClick = () => {
@@ -77,7 +104,7 @@ async function loadHomeServices() {
             }
 
             if (message) {
-                message.value = `Hola, quiero solicitar una cotización para el servicio: ${serviceText}.`;
+                message.value = tr('home.services.requestMessage', { service: serviceText }, `Hola, quiero solicitar una cotización para el servicio: ${serviceText}.`);
             }
 
             document.getElementById("contact")?.scrollIntoView({

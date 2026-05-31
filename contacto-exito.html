@@ -1,49 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <title>Mensaje enviado | GUCA Construcciones</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Tu mensaje fue enviado correctamente a GUCA Construcciones." />
-    <link rel="stylesheet" href="css/styles.css" />
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+    <meta charset="utf-8"/>
+    <title data-i18n="success.contactTitle">Mensaje enviado | GUCA Construcciones</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="Tu mensaje fue enviado correctamente a GUCA Construcciones." data-i18n-content="success.contactDescription" name="description"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 </head>
-
 <body>
 <header>
     <div class="container nav-bar">
-        <a class="logo logo-link" href="index.html" aria-label="Volver al inicio">
-            <img src="assets/logo-placeholder.png" alt="Logo GUCA Construcciones" />
+        <a aria-label="Volver al inicio" class="logo logo-link" href="index.html">
+            <img alt="Logo GUCA Construcciones" src="assets/logo-placeholder.png"/>
             <span class="logo-title">GUCA CONSTRUCCIONES</span>
         </a>
     </div>
 </header>
-
 <main>
     <section class="success-page">
         <div class="container success-card">
             <div class="success-icon">
                 <i class="fa-solid fa-check"></i>
             </div>
-
-            <p class="success-eyebrow">Mensaje recibido</p>
-
-            <h1>¡Gracias por tu mensaje!</h1>
-
-            <p>
+            <p class="success-eyebrow" data-i18n="success.contactEyebrow">Mensaje recibido</p>
+            <h1 data-i18n="success.contactHeading">¡Gracias por tu mensaje!</h1>
+            <p data-i18n="success.contactText">
                 Hemos recibido tu solicitud correctamente. El equipo de GUCA Construcciones
                 revisará la información y se pondrá en contacto contigo lo antes posible.
             </p>
-
             <div class="success-actions">
-                <a href="index.html" class="btn btn-primary">Volver al inicio</a>
-                <a href="index.html#projects" class="btn btn-outline">Ver proyectos</a>
+                <a class="btn btn-primary" data-i18n="success.backHome" href="index.html">Volver al inicio</a>
+                <a class="btn btn-outline" data-i18n="success.seeProjects" href="index.html#projects">Ver proyectos</a>
             </div>
         </div>
     </section>
 </main>
-</body>
+<script defer="True" src="js_files/translations/es.js"></script><script defer="True" src="js_files/translations/en.js"></script><script defer="True" src="js_files/language.js"></script></body>
 </html>

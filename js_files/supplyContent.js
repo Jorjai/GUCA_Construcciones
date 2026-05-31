@@ -4,6 +4,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadSupplyCategories();
 });
 
+function currentLang() {
+    return window.GucaI18n?.getLanguage?.() || 'es';
+}
+
+function translatedField(item, field) {
+    const lang = currentLang();
+    if (lang !== 'es') {
+        const translated = item[`${field}_${lang}`];
+        if (translated !== null && translated !== undefined && String(translated).trim() !== '') {
+            return translated;
+        }
+    }
+    return item[field] || '';
+}
+
+function tr(key, params = {}, fallback = '') {
+    return window.GucaI18n?.t(key, params, fallback) || fallback || key;
+}
+
 async function loadSupplyCategories() {
     const categoryGrid = document.getElementById("supplyCategoryGrid");
 
@@ -16,7 +35,7 @@ async function loadSupplyCategories() {
 
     const { data, error } = await GucaSupabase
         .from("supply_categories")
-        .select("slug, name, description, icon, display_order, is_active")
+        .select("slug, name, description, name_en, description_en, icon, display_order, is_active")
         .eq("is_active", true)
         .order("display_order", { ascending: true });
 
@@ -30,18 +49,24 @@ async function loadSupplyCategories() {
         return;
     }
 
-    categoryGrid.innerHTML = data.map((category) => `
+    categoryGrid.innerHTML = data.map((category) => {
+        const name = translatedField(category, 'name');
+        const description = translatedField(category, 'description');
+
+        return `
         <button class="supply-category-card" type="button" data-category="${escapeAttribute(category.slug)}">
             <span class="supply-category-icon">
                 <i class="fa-solid ${escapeAttribute(category.icon || "fa-box")}"></i>
             </span>
-            <strong>${escapeHtml(category.name)}</strong>
-            <small>${escapeHtml(category.description)}</small>
+            <strong>${escapeHtml(name)}</strong>
+            <small>${escapeHtml(description)}</small>
         </button>
-    `).join("");
+    `;
+    }).join("");
 
     setupDynamicCategoryClicks();
     updateCategoryFilterOptions(data);
+    window.GucaI18n?.translatePage(document);
 }
 
 function setupDynamicCategoryClicks() {
@@ -79,10 +104,10 @@ function updateCategoryFilterOptions(categories) {
     const currentValue = categoryFilter.value || "all";
 
     categoryFilter.innerHTML = `
-        <option value="all">Todas</option>
+        <option value="all">${tr("supplies.allCategories", {}, "Todas")}</option>
         ${categories.map((category) => `
             <option value="${escapeAttribute(category.slug)}">
-                ${escapeHtml(category.name)}
+                ${escapeHtml(translatedField(category, 'name'))}
             </option>
         `).join("")}
     `;

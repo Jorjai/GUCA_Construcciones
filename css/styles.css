@@ -3097,3 +3097,908 @@ footer {
         width: 100%;
     }
 }
+
+/* =========================
+   Language selector
+   ========================= */
+
+.nav-language {
+    display: flex;
+    align-items: center;
+    margin-left: -0.45rem;
+}
+
+.language-select {
+    width: auto;
+    min-width: 88px;
+    height: 38px;
+    padding: 0 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 60, 136, 0.45);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+}
+
+.language-select:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+[data-theme="dark"] .language-select {
+    background: var(--mid-navy);
+    color: #e5e7eb;
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.language-select option {
+    color: #111827;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+
+/* =========================================================
+   FINAL HEADER, LANGUAGE SELECTOR & MOBILE MENU OVERRIDES
+   Last organized responsive update
+   ========================================================= */
+
+/* Desktop header layout */
+.nav-bar {
+    justify-content: flex-start;
+}
+
+.nav-bar nav {
+    margin-left: auto;
+}
+
+.nav-language {
+    display: flex;
+    align-items: center;
+    margin-left: 0.35rem;
+}
+
+#theme-toggle {
+    margin-left: 1.25rem;
+}
+
+/* Language selector */
+.language-select {
+    width: auto;
+    min-width: 88px;
+    height: 38px;
+    padding: 0 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 60, 136, 0.45);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+}
+
+.language-select:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+}
+
+.language-select:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+[data-theme="dark"] .language-select {
+    background: var(--mid-navy);
+    color: #e5e7eb;
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.language-select option {
+    color: #111827;
+    background: #ffffff;
+}
+
+/* Screen-reader-only labels */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Hamburger button base */
+.mobile-menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 42px;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid rgba(31, 60, 136, 0.24);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.mobile-menu-toggle:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+}
+
+[data-theme="dark"] .mobile-menu-toggle {
+    background: var(--mid-navy);
+    color: #e5e7eb;
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* Tablet and mobile header */
+@media (max-width: 760px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .container {
+        width: min(100% - 1.25rem, 1180px);
+    }
+
+    .nav-bar {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto auto;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.75rem 0;
+    }
+
+    .logo,
+    .logo-link {
+        min-width: 0;
+    }
+
+    .logo-title {
+        max-width: 190px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 0.95rem;
+        letter-spacing: 0.08em;
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex;
+        order: 2;
+        width: auto;
+        min-width: 42px;
+    }
+
+    #theme-toggle {
+        order: 3;
+        width: 82px;
+        min-width: 82px;
+        height: 42px;
+        margin-left: 0;
+        padding: 0;
+    }
+
+    #theme-toggle::before {
+        top: 6px;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 48px;
+    }
+
+    .nav-language {
+        order: 4;
+        margin-left: 0;
+        width: auto;
+    }
+
+    .language-select {
+        min-width: 82px;
+        height: 42px;
+        padding: 0 0.65rem;
+        font-size: 0.82rem;
+    }
+
+    .nav-bar nav {
+        display: none;
+        grid-column: 1 / -1;
+        order: 5;
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .nav-bar.nav-open nav {
+        display: block;
+    }
+
+    .nav-bar nav ul {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+        width: 100%;
+        padding: 0.85rem;
+        margin-top: 0.75rem;
+        border-radius: 1rem;
+        background: rgba(15, 23, 42, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 35px rgba(15, 23, 42, 0.25);
+    }
+
+    .nav-bar nav a {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 0.85rem;
+        border-radius: 0.75rem;
+        color: #ffffff;
+        text-align: left;
+        font-size: 0.95rem;
+        font-weight: 800;
+    }
+
+    .nav-bar nav a:hover,
+    .nav-bar nav a:focus {
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
+    }
+
+    .hero,
+    .supply-hero,
+    .not-found-page {
+        padding-top: 3rem;
+    }
+
+    .hero-grid,
+    .contact-layout,
+    .not-found-grid,
+    .supply-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .projects-grid,
+    .grid,
+    .supply-category-grid,
+    .inventory-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .inventory-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 1rem;
+        border-radius: 1.1rem;
+    }
+
+    .hero-cta {
+        gap: 0.75rem;
+    }
+
+    .hero-cta .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .footer-icons {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .nav-bar {
+        grid-template-columns: minmax(0, 1fr) 42px 76px 76px;
+        gap: 0.4rem;
+    }
+
+    .logo img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .logo-title {
+        max-width: 95px;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+    }
+
+    .mobile-menu-toggle {
+        width: 42px;
+        height: 42px;
+        padding: 0;
+    }
+
+    .mobile-menu-toggle span {
+        display: none;
+    }
+
+    #theme-toggle {
+        width: 76px;
+        min-width: 76px;
+    }
+
+    #theme-toggle::after {
+        font-size: 0.6rem;
+        padding-right: 10px;
+    }
+
+    #theme-toggle::before {
+        width: 26px;
+        height: 26px;
+        top: 7px;
+        left: 6px;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 44px;
+    }
+
+    [data-theme="dark"] #theme-toggle::after {
+        padding-left: 10px;
+    }
+
+    .language-select {
+        min-width: 76px;
+        width: 76px;
+        padding: 0 0.45rem;
+        font-size: 0.78rem;
+    }
+
+    section {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+}
+
+/* Extra narrow phones */
+@media (max-width: 360px) {
+    .nav-bar {
+        grid-template-columns: 42px 42px 72px 72px;
+        justify-content: space-between;
+    }
+
+    .logo-title {
+        display: none;
+    }
+
+    #theme-toggle {
+        width: 72px;
+        min-width: 72px;
+    }
+
+    .language-select {
+        width: 72px;
+        min-width: 72px;
+        font-size: 0.74rem;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 40px;
+    }
+}
+
+
+/* =========================================================
+   FINAL HEADER COLOR BLEND
+   Keeps the header visually connected to the dark hero/gallery.
+   Place this section at the very bottom of the CSS file.
+   ========================================================= */
+
+header {
+    background:
+            radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 32%),
+            linear-gradient(135deg, #020617 0%, #0b1224 46%, #132b63 100%);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.26);
+}
+
+[data-theme="dark"] header {
+    background:
+            radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 32%),
+            linear-gradient(135deg, #020617 0%, #07111f 52%, #0b1224 100%);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.42);
+}
+
+.nav-bar {
+    color: #f8fafc;
+}
+
+.logo,
+.logo-link,
+.logo-title,
+nav a {
+    color: #f8fafc;
+}
+
+nav a:hover,
+nav a:focus {
+    color: var(--page-accent, var(--home-accent));
+}
+
+/* Keep the controls softer on the dark header */
+#theme-toggle {
+    margin-left: 0.35rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 18px rgba(2, 6, 23, 0.28);
+}
+
+#theme-toggle::after {
+    color: #f8fafc;
+}
+
+#theme-toggle::before {
+    background: var(--home-accent);
+}
+
+[data-theme="dark"] #theme-toggle {
+    background: rgba(2, 6, 23, 0.55);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+[data-theme="dark"] #theme-toggle::before {
+    background: var(--secondary);
+}
+
+.language-select {
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 18px rgba(2, 6, 23, 0.28);
+}
+
+.language-select:hover,
+.language-select:focus {
+    border-color: rgba(56, 189, 248, 0.55);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.language-select option {
+    color: #111827;
+    background: #ffffff;
+}
+
+.mobile-menu-toggle {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #f8fafc;
+}
+
+.mobile-menu-toggle:hover,
+.mobile-menu-toggle:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(56, 189, 248, 0.45);
+}
+
+@media (max-width: 760px) {
+    header {
+        background:
+                radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 38%),
+                linear-gradient(135deg, #020617 0%, #0b1224 58%, #132b63 100%);
+    }
+
+    .nav-bar nav ul {
+        background: rgba(2, 6, 23, 0.98);
+        border-color: rgba(56, 189, 248, 0.16);
+    }
+
+    .language-select {
+        background: rgba(255, 255, 255, 0.08);
+        color: #f8fafc;
+        border-color: rgba(255, 255, 255, 0.18);
+    }
+}
+
+/* =========================================================
+   FINAL MOBILE HEADER BALANCE
+   Keeps "GUCA" on first line and "Construcciones" on second line.
+   Makes the theme and language controls smaller on mobile.
+   Hide the text logo only on very narrow screens.
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .container {
+        width: min(100% - 1rem, 1180px);
+    }
+
+    .nav-bar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 40px 52px 72px;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.65rem 0;
+    }
+
+    .logo,
+    .logo-link {
+        min-width: 0;
+        gap: 0.55rem;
+    }
+
+    .logo img {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+    }
+
+    .logo-title {
+        display: block;
+        max-width: 125px;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        line-height: 1.15;
+        font-size: 0.82rem;
+        letter-spacing: 0.12em;
+        word-spacing: 999px;
+    }
+
+    .mobile-menu-toggle {
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        min-height: 40px;
+        padding: 0;
+        border-color: rgba(148, 163, 184, 0.32);
+    }
+
+    .mobile-menu-toggle span {
+        display: none;
+    }
+
+    #theme-toggle {
+        width: 52px;
+        min-width: 52px;
+        height: 40px;
+        min-height: 40px;
+        margin-left: 0;
+        padding: 0;
+        border-radius: 999px;
+    }
+
+    #theme-toggle::after {
+        content: "";
+        padding: 0;
+    }
+
+    #theme-toggle::before {
+        top: 6px;
+        left: 6px;
+        width: 28px;
+        height: 28px;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 18px;
+    }
+
+    .nav-language {
+        margin-left: 0;
+        min-width: 0;
+    }
+
+    .language-select {
+        width: 72px;
+        min-width: 72px;
+        height: 40px;
+        min-height: 40px;
+        padding: 0 0.45rem;
+        font-size: 0.76rem;
+        border-radius: 999px;
+    }
+
+    .nav-bar nav {
+        grid-column: 1 / -1;
+        order: 10;
+    }
+}
+
+@media (max-width: 340px) {
+    .nav-bar {
+        grid-template-columns: auto 40px 48px 68px;
+    }
+
+    .logo-title {
+        display: none;
+    }
+
+    .logo img {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+
+    #theme-toggle {
+        width: 48px;
+        min-width: 48px;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 14px;
+    }
+
+    .language-select {
+        width: 68px;
+        min-width: 68px;
+        font-size: 0.72rem;
+    }
+}
+
+/* =========================
+   Final compact language/header adjustment
+   Keeps GUCA Construcciones visible on normal phones
+   ========================= */
+
+@media (max-width: 760px) {
+    .nav-bar {
+        grid-template-columns: auto 1fr auto auto;
+        gap: 0.35rem;
+    }
+
+    .logo-title {
+        display: flex;
+        flex-direction: column;
+        max-width: 158px;
+        line-height: 1.2;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        font-size: 0.78rem;
+        letter-spacing: 0.16em;
+    }
+
+    .mobile-menu-toggle {
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        min-height: 40px;
+        padding: 0;
+    }
+
+    #theme-toggle {
+        width: 64px;
+        min-width: 64px;
+        height: 40px;
+        margin-left: 0;
+    }
+
+    #theme-toggle::before {
+        top: 5px;
+        left: 5px;
+        width: 30px;
+        height: 30px;
+    }
+
+    #theme-toggle::after {
+        padding-right: 8px;
+        font-size: 0.58rem;
+        letter-spacing: 0.04em;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 29px;
+    }
+
+    [data-theme="dark"] #theme-toggle::after {
+        padding-left: 7px;
+    }
+
+    .nav-language {
+        margin-left: 0;
+    }
+
+    .language-select {
+        min-width: 66px;
+        width: 66px;
+        height: 40px;
+        padding: 0 0.45rem;
+        font-size: 0.78rem;
+        letter-spacing: 0.02em;
+    }
+}
+
+@media (max-width: 390px) {
+    .logo-title {
+        max-width: 142px;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+    }
+
+    #theme-toggle {
+        width: 58px;
+        min-width: 58px;
+    }
+
+    #theme-toggle::after {
+        font-size: 0.52rem;
+        padding-right: 6px;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 23px;
+    }
+
+    .language-select {
+        min-width: 60px;
+        width: 60px;
+        padding: 0 0.35rem;
+        font-size: 0.72rem;
+    }
+}
+
+@media (max-width: 340px) {
+    .logo-title {
+        display: none;
+    }
+
+    .nav-bar {
+        grid-template-columns: auto 1fr auto auto;
+    }
+}
+
+/* =========================
+   Final mobile header correction
+   Keeps LIGHT/DARK visible while keeping language compact
+   ========================= */
+
+@media (max-width: 760px) {
+    .nav-bar {
+        grid-template-columns: auto 1fr auto auto;
+        gap: 0.28rem;
+    }
+
+    .logo-title {
+        max-width: 150px;
+        font-size: 0.76rem;
+        letter-spacing: 0.15em;
+        line-height: 1.2;
+    }
+
+    .mobile-menu-toggle {
+        width: 38px;
+        min-width: 38px;
+        height: 38px;
+        min-height: 38px;
+        padding: 0;
+    }
+
+    #theme-toggle {
+        width: 74px;
+        min-width: 74px;
+        height: 38px;
+        min-height: 38px;
+        margin-left: 0;
+    }
+
+    #theme-toggle::before {
+        top: 5px;
+        left: 5px;
+        width: 28px;
+        height: 28px;
+    }
+
+    #theme-toggle::after {
+        content: "LIGHT";
+        justify-content: flex-end;
+        padding-right: 8px;
+        color: #e5e7eb;
+        font-size: 0.54rem;
+        letter-spacing: 0.04em;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 41px;
+    }
+
+    [data-theme="dark"] #theme-toggle::after {
+        content: "DARK";
+        justify-content: flex-start;
+        padding-left: 8px;
+        padding-right: 0;
+        color: #e5e7eb;
+    }
+
+    .language-select {
+        width: 58px;
+        min-width: 58px;
+        height: 38px;
+        min-height: 38px;
+        padding: 0 0.25rem;
+        font-size: 0.72rem;
+        letter-spacing: 0;
+    }
+}
+
+@media (max-width: 390px) {
+    .logo-title {
+        max-width: 138px;
+        font-size: 0.7rem;
+        letter-spacing: 0.13em;
+    }
+
+    #theme-toggle {
+        width: 70px;
+        min-width: 70px;
+    }
+
+    #theme-toggle::after {
+        font-size: 0.5rem;
+        padding-right: 7px;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 37px;
+    }
+
+    [data-theme="dark"] #theme-toggle::after {
+        padding-left: 7px;
+    }
+
+    .language-select {
+        width: 54px;
+        min-width: 54px;
+        font-size: 0.68rem;
+    }
+}
+
+@media (max-width: 340px) {
+    .logo-title {
+        display: none;
+    }
+
+    #theme-toggle {
+        width: 68px;
+        min-width: 68px;
+    }
+
+    [data-theme="dark"] #theme-toggle::before {
+        left: 35px;
+    }
+}

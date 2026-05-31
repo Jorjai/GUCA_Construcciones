@@ -1,118 +1,97 @@
 
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8"/>
     <title>GUCA Construcciones</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="GUCA Construcciones - Construcción y remodelación profesional para proyectos residenciales y comerciales." />
-    <link rel="stylesheet" href="css/styles.css" />
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script defer src="js_files/supabaseClient.js"></script>
-    <script defer src="js_files/homeContent.js"></script>
-    <script defer src="js_files/main.js"></script>
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="GUCA Construcciones - Construcción y remodelación profesional para proyectos residenciales y comerciales." data-i18n-content="home.metaDescription" name="description"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <script defer="" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer="" src="js_files/supabaseClient.js"></script>
+    <script defer="True" src="js_files/translations/es.js"></script><script defer="True" src="js_files/translations/en.js"></script><script defer="True" src="js_files/language.js"></script><script defer="" src="js_files/homeContent.js"></script>
+    <script defer="" src="js_files/main.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 </head>
 <body class="home-page">
 <header>
     <div class="container nav-bar">
         <div class="logo">
-            <img src="assets/logo-placeholder.png" alt="Logo Construcciones GUCA" />
+            <img alt="Logo Construcciones GUCA" src="assets/logo-placeholder.png"/>
             <div class="logo-title">GUCA Construcciones</div>
         </div>
         <nav>
             <ul>
-                <li><a href="#services">Servicios</a></li>
-                <li><a href="#projects">Proyectos</a></li>
-                <li><a href="suministros.html">Suministros</a></li>
-                <li><a href="#contact">Contacto</a></li>
+                <li><a data-i18n="nav.services" href="#services">Servicios</a></li>
+                <li><a data-i18n="nav.projects" href="#projects">Proyectos</a></li>
+                <li><a data-i18n="nav.supplies" href="suministros.html">Suministros</a></li>
+                <li><a data-i18n="nav.contact" href="#contact">Contacto</a></li>
             </ul>
         </nav>
-        <button class="mobile-menu-toggle" type="button" aria-label="Abrir menú">
+        <button aria-label="Abrir menú" class="mobile-menu-toggle" type="button">
             <i class="fa-solid fa-bars"></i>
-            <span>Menú</span>
+            <span data-i18n="nav.menu">Menú</span>
         </button>
-        <button id="theme-toggle" class="btn btn-outline" aria-label="Cambiar tema">🌙</button>
+        <button aria-label="Cambiar tema" class="btn btn-outline" id="theme-toggle">🌙</button><div class="nav-language"><label class="sr-only" data-i18n="language.label" for="languageSelect">Language</label><select aria-label="Select language" class="language-select" data-i18n-aria-label="language.label" id="languageSelect"><option data-i18n="language.es" selected="" value="es">🇲🇽 ES</option><option data-i18n="language.en" value="en">🌐 EN</option></select></div>
     </div>
 </header>
-
 <main>
     <!-- Galería destacada al inicio (vacía, JS la llenará) -->
-    <section class="hero-gallery" aria-label="Galería destacada de obras">
+    <section aria-label="Galería destacada de obras" class="hero-gallery">
         <div class="hero-gallery-inner" id="hero-gallery"></div>
     </section>
     <section class="hero">
         <div class="container hero-grid">
             <div>
-                <span class="home-kicker">Construcción profesional</span>
-                <h1>Construcción sólida, resultados que duran.</h1>
-                <p>
+                <span class="home-kicker" data-i18n="home.kicker">Construcción profesional</span>
+                <h1 data-i18n="home.title">Construcción sólida, resultados que duran.</h1>
+                <p data-i18n-html="home.introHtml">
                     En <strong>GUCA Construcciones</strong> somos una empresa especializada en obra civil y mantenimiento industrial y en edificaciones;
                     urbanización, instalaciones hidráulicas, sanitarias y pluviales así como construcción de infraestructura pública y privada.
 
                 </p>
-
                 <div class="hero-cta">
-                    <a href="#contact" class="btn btn-primary">Solicitar cotización</a>
-                    <a href="#projects" class="btn btn-outline">Ver proyectos</a>
+                    <a class="btn btn-primary" data-i18n="common.quote" href="#contact">Solicitar cotización</a>
+                    <a class="btn btn-outline" data-i18n="home.seeProjects" href="#projects">Ver proyectos</a>
                 </div>
-
                 <div class="hero-highlights">
-                    <div class="hero-highlight">
-                        <strong>+6 años de experiencia</strong>
-                        Proyectos residenciales, comerciales y de remodelación.
-                    </div>
-                    <div class="hero-highlight">
-                        <strong>Entregas puntuales</strong>
-                        Planeación clara y comunicación constante con el cliente.
-                    </div>
-                    <div class="hero-highlight">
-                        <strong>Calidad garantizada</strong>
-                        Materiales confiables y mano de obra profesional.
-                    </div>
+                    <div class="hero-highlight"><strong data-i18n="home.highlights.experienceTitle">+6 años de experiencia</strong><span data-i18n="home.highlights.experienceText">Proyectos residenciales, comerciales y de remodelación.</span></div>
+                    <div class="hero-highlight"><strong data-i18n="home.highlights.deliveryTitle">Entregas puntuales</strong><span data-i18n="home.highlights.deliveryText">Planeación clara y comunicación constante con el cliente.</span></div>
+                    <div class="hero-highlight"><strong data-i18n="home.highlights.qualityTitle">Calidad garantizada</strong><span data-i18n="home.highlights.qualityText">Materiales confiables y mano de obra profesional.</span></div>
                 </div>
             </div>
-
             <aside class="hero-image home-hero-panel">
                 <div class="home-panel-icon"><i class="fa-solid fa-building-shield"></i></div>
-                <h2>¿Qué construimos?</h2>
-                <p>
+                <h2 data-i18n="home.panel.title">¿Qué construimos?</h2>
+                <p data-i18n="home.panel.text">
                     Desde ampliaciones de casa y remodelaciones de interiores, hasta
                     locales comerciales listos para operar.
                 </p>
                 <div class="hero-badges">
                     <div>
-                        <strong>Residencial</strong>
-                        <br />Casas, ampliaciones, cocinas, baños.
-                    </div>
+                        <strong data-i18n="home.panel.residentialTitle">Residencial</strong>
+                        <br/><span data-i18n="home.panel.residentialText">Casas, ampliaciones, cocinas, baños.</span></div>
                     <div>
-                        <strong>Comercial</strong>
-                        <br />Locales, oficinas, fachadas.
-                    </div>
+                        <strong data-i18n="home.panel.commercialTitle">Comercial</strong>
+                        <br/><span data-i18n="home.panel.commercialText">Locales, oficinas, fachadas.</span></div>
                     <div>
-                        <strong>Remodelaciones</strong>
-                        <br />Actualización de espacios ya existentes.
-                    </div>
+                        <strong data-i18n="home.panel.remodelingTitle">Remodelaciones</strong>
+                        <br/><span data-i18n="home.panel.remodelingText">Actualización de espacios ya existentes.</span></div>
                     <div>
-                        <strong>Obra civil</strong>
-                        <br />Trabajos estructurales y cimentaciones.
-                    </div>
+                        <strong data-i18n="home.panel.civilTitle">Obra civil</strong>
+                        <br/><span data-i18n="home.panel.civilText">Trabajos estructurales y cimentaciones.</span></div>
                 </div>
             </aside>
         </div>
     </section>
-
     <section id="services">
         <div class="container">
-            <h2>Servicios</h2>
-            <p class="section-intro">
+            <h2 data-i18n="home.services.heading">Servicios</h2>
+            <p class="section-intro" data-i18n="home.services.intro">
                 Ofrecemos soluciones completas de construcción para acompañarte desde la
                 idea inicial hasta la entrega de la obra terminada.
             </p>
-
             <div class="grid" id="servicesGrid">
                 <article class="card">
                     <div class="pill">Diseño y planeación</div>
@@ -122,7 +101,6 @@
                         para aprovechar al máximo tu terreno o inmueble.
                     </p>
                 </article>
-
                 <article class="card">
                     <div class="pill">Construcción</div>
                     <h3>Obra nueva</h3>
@@ -131,7 +109,6 @@
                         casas, edificios pequeños y locales comerciales.
                     </p>
                 </article>
-
                 <article class="card">
                     <div class="pill">Remodelación</div>
                     <h3>Renovación de espacios</h3>
@@ -140,7 +117,6 @@
                         de molestias para los ocupantes.
                     </p>
                 </article>
-
                 <article class="card">
                     <div class="pill">Mantenimiento</div>
                     <h3>Reparaciones generales</h3>
@@ -149,7 +125,6 @@
                         hidráulicas, impermeabilización de azoteas y muros.
                     </p>
                 </article>
-
                 <article class="card">
                     <div class="pill">Gestión</div>
                     <h3>Supervisión de obra</h3>
@@ -158,7 +133,6 @@
                         conforme al plan y sin sorpresas.
                     </p>
                 </article>
-
                 <article class="card">
                     <div class="pill">Soporte</div>
                     <h3>Acompañamiento al cliente</h3>
@@ -170,228 +144,155 @@
             </div>
         </div>
     </section>
-
     <section id="projects">
         <div class="container">
-            <h2>Obras ejecutadas</h2>
-            <p class="section-intro">
+            <h2 data-i18n="home.projects.heading">Obras ejecutadas</h2>
+            <p class="section-intro" data-i18n="home.projects.intro">
                 Una muestra de los contratos de obra civil, mantenimiento e instalaciones
                 que hemos ejecutado para la iniciativa privada y el Municipio de Querétaro.
             </p>
-
             <div class="projects-toolbar">
                 <div class="projects-sort">
-                    <button type="button" class="btn-chip" data-project-sort="default">
+                    <button class="btn-chip" data-i18n="home.projects.original" data-project-sort="default" type="button">
                         Orden original
                     </button>
-                    <button type="button" class="btn-chip" data-project-sort="year-desc">
+                    <button class="btn-chip" data-i18n="home.projects.recent" data-project-sort="year-desc" type="button">
                         Más recientes
                     </button>
-                    <button type="button" class="btn-chip" data-project-sort="client">
+                    <button class="btn-chip" data-i18n="home.projects.client" data-project-sort="client" type="button">
                         Cliente A–Z
                     </button>
                 </div>
-
-                <p id="projectsStatus" class="projects-status">
+                <p class="projects-status" data-i18n="home.projects.statusInitial" id="projectsStatus">
                     Mostrando primeras obras. Usa “Ver más” para ver el resto.
                 </p>
             </div>
-
             <div class="projects-grid" id="projectsGrid"></div>
-
             <div class="projects-load-more-wrapper">
-                <button id="projectsLoadMore" type="button">
+                <button data-i18n="home.projects.more" id="projectsLoadMore" type="button">
                     Ver más obras
                 </button>
             </div>
         </div>
     </section>
-
     <section id="contact">
         <div class="container contact-layout">
             <!-- LEFT: form -->
             <div>
-                <h2>Contacto</h2>
-                <p class="section-intro">
+                <h2 data-i18n="home.contact.heading">Contacto</h2>
+                <p class="section-intro" data-i18n="home.contact.intro">
                     Cuéntanos sobre tu proyecto y te contactaremos para agendar una visita o
                     enviar una cotización aproximada.
                 </p>
-
                 <!-- NETLIFY FORM -->
-                <form
-                        id="contact-form"
-                        name="contact"
-                        method="POST"
-                        data-netlify="true"
-                        netlify-honeypot="bot-field"
-                        data-netlify-recaptcha="true"
-                        action="contacto-exito.html"
-                >
+                <form action="contacto-exito.html" data-netlify="true" data-netlify-recaptcha="true" id="contact-form" method="POST" name="contact" netlify-honeypot="bot-field">
                     <!-- Required by Netlify -->
-                    <input type="hidden" name="form-name" value="contact" />
-
+                    <input name="form-name" type="hidden" value="contact"/>
                     <!-- Hidden combined phone (JS fills this before submit) -->
-                    <input type="hidden" id="phoneCombined" name="phone" />
-
+                    <input id="phoneCombined" name="phone" type="hidden"/>
                     <!-- Honeypot (hidden to users, bots tend to fill it) -->
                     <p class="hidden">
                         <label>No llenar:
-                            <input name="bot-field" />
+                            <input name="bot-field"/>
                         </label>
                     </p>
-
                     <div class="field">
-                        <label for="name">Nombre completo *</label>
-                        <input
-                                id="name"
-                                name="name"
-                                type="text"
-                                placeholder="Nombre y apellidos"
-                                required
-                        />
+                        <label data-i18n="home.contact.name" for="name">Nombre completo *</label>
+                        <input data-i18n-placeholder="home.contact.namePlaceholder" id="name" name="name" placeholder="Nombre y apellidos" required="" type="text"/>
                     </div>
-
                     <div class="field">
-                        <label for="email">Correo electrónico *</label>
-                        <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="tucorreo@ejemplo.com"
-                                required
-                        />
+                        <label data-i18n="home.contact.email" for="email">Correo electrónico *</label>
+                        <input data-i18n-placeholder="home.contact.emailPlaceholder" id="email" name="email" placeholder="tucorreo@ejemplo.com" required="" type="email"/>
                     </div>
-
                     <div class="field">
-                        <label for="phoneNumber">Teléfono / WhatsApp *</label>
+                        <label data-i18n="home.contact.phone" for="phoneNumber">Teléfono / WhatsApp *</label>
                         <div class="phone-row">
-                            <select name="phoneCountry" id="phoneCountry">
+                            <select id="phoneCountry" name="phoneCountry">
                                 <!-- México por defecto -->
-                                <option value="+52" selected>🇲🇽 +52 México</option>
+                                <option selected="" value="+52">🇲🇽 +52 México</option>
                                 <!-- Si quieres, aquí agregas más países -->
                                 <!-- <option value="+1">🇺🇸 +1 Estados Unidos</option> -->
                             </select>
-
-                            <input
-                                    type="tel"
-                                    id="phoneNumber"
-                                    name="phoneNumber"
-                                    placeholder="10 dígitos"
-                                    inputmode="numeric"
-                                    maxlength="10"
-                                    required
-                            />
+                            <input data-i18n-placeholder="home.contact.phonePlaceholder" id="phoneNumber" inputmode="numeric" maxlength="10" name="phoneNumber" placeholder="10 dígitos" required="" type="tel"/>
                         </div>
                     </div>
-
                     <div class="field">
-                        <label for="projectType">Tipo de proyecto</label>
-                        <select name="projectType" id="projectType">
-                            <option value="">Selecciona una opción</option>
-                            <option value="residential">Casa / Residencial</option>
-                            <option value="commercial">Comercial</option>
-                            <option value="remodeling">Remodelación</option>
-                            <option value="maintenance">Mantenimiento</option>
-                            <option value="other">Otro</option>
+                        <label data-i18n="home.contact.projectType" for="projectType">Tipo de proyecto</label>
+                        <select id="projectType" name="projectType">
+                            <option data-i18n="home.contact.projectDefault" value="">Selecciona una opción</option>
+                            <option data-i18n="home.contact.residential" value="residential">Casa / Residencial</option>
+                            <option data-i18n="home.contact.commercial" value="commercial">Comercial</option>
+                            <option data-i18n="home.contact.remodeling" value="remodeling">Remodelación</option>
+                            <option data-i18n="home.contact.maintenance" value="maintenance">Mantenimiento</option>
+                            <option data-i18n="home.contact.other" value="other">Otro</option>
                         </select>
                     </div>
-
                     <div class="field">
-                        <label for="message">Descripción del proyecto *</label>
-                        <textarea
-                                id="message"
-                                name="message"
-                                required
-                                placeholder="Por ejemplo: construir una recámara adicional, remodelar la cocina, etc."
-                        ></textarea>
+                        <label data-i18n="home.contact.message" for="message">Descripción del proyecto *</label>
+                        <textarea data-i18n-placeholder="home.contact.messagePlaceholder" id="message" name="message" placeholder="Por ejemplo: construir una recámara adicional, remodelar la cocina, etc." required=""></textarea>
                     </div>
-
                     <!-- Netlify reCAPTCHA placeholder -->
                     <div class="field">
                         <div data-netlify-recaptcha="true"></div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">
+                    <button class="btn btn-primary" data-i18n="home.contact.submit" type="submit">
                         Enviar mensaje
                     </button>
-
-                    <p id="form-msg" class="msg" aria-live="polite"></p>
+                    <p aria-live="polite" class="msg" id="form-msg"></p>
                 </form>
             </div>
-
             <!-- RIGHT: contact info column (unchanged, just moved here) -->
             <div class="contact-info">
-                <h3>Datos de contacto</h3>
-
+                <h3 data-i18n="home.contact.infoHeading">Datos de contacto</h3>
                 <div class="info-block">
-                    <strong>Correo electrónico</strong>
-                    <a
-                            href="mailto:construcciones.guca@gmail.com"
-                            id="contactEmailLink"
-                    >
+                    <strong data-i18n="home.contact.emailInfo">Correo electrónico</strong>
+                    <a href="mailto:construcciones.guca@gmail.com" id="contactEmailLink">
                         construcciones.guca@gmail.com
                     </a>
                 </div>
-
                 <div class="info-block">
-                    <strong>Facebook</strong>
-                    <a href="https://www.facebook.com/GUCACONSTRUCCIONES"
-                       target="_blank" rel="noopener">
+                    <strong data-i18n="home.contact.facebook">Facebook</strong>
+                    <a href="https://www.facebook.com/GUCACONSTRUCCIONES" rel="noopener" target="_blank">
                         facebook.com/GUCACONSTRUCCIONES
                     </a>
                 </div>
             </div>
         </div>
     </section>
-
 </main>
-
 <footer>
     <div class="footer-inner">
-           <span class="footer-copy">
-              GUCA Construcciones. Todos los derechos reservados. © <span id="year"></span>
-           </span>
-
+        <span class="footer-copy"><span data-i18n="footer.copy">GUCA Construcciones. Todos los derechos reservados. ©</span> <span id="year"></span></span>
         <div class="footer-icons">
             <!-- Copy email -->
             <button class="icon-btn" id="copyEmailBtn" title="Copiar correo">
                 <i class="fa-regular fa-envelope"></i>
             </button>
-
             <!-- Facebook -->
-            <a
-                    class="icon-btn"
-                    href="https://www.facebook.com/GUCACONSTRUCCIONES"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Facebook"
-            >
+            <a class="icon-btn" href="https://www.facebook.com/GUCACONSTRUCCIONES" rel="noopener noreferrer" target="_blank" title="Facebook">
                 <i class="fa-brands fa-facebook-f"></i>
             </a>
-
             <!-- Back to top -->
-            <button class="back-top-btn" type="button">
+            <button class="back-top-btn" data-i18n-html="common.backTop" type="button">
                 Volver arriba <span>↑</span>
             </button>
             <!-- login discrete -->
-
-            <a class="icon-btn" href="login.html" title="Acceso administrador" aria-label="Acceso administrador">
+            <a aria-label="Acceso administrador" class="icon-btn" href="login.html" title="Acceso administrador">
                 <i class="fa-solid fa-user-lock"></i>
             </a>
         </div>
     </div>
 </footer>
-
 <!-- Toast centered message -->
-<div id="copyToast" class="toast" role="status" aria-live="polite"></div>
-<div id="contact-confirmation" class="contact-confirmation" hidden>
+<div aria-live="polite" class="toast" id="copyToast" role="status"></div>
+<div class="contact-confirmation" hidden="" id="contact-confirmation">
     <div class="contact-confirmation__card">
-        <h2>Mensaje enviado</h2>
-        <p>
+        <h2 data-i18n="home.confirmation.heading">Mensaje enviado</h2>
+        <p data-i18n-html="home.confirmation.textHtml">
             Gracias por contactarnos. Tu mensaje ha sido enviado a
             <strong>construcciones.guca@gmail.com</strong>. Te responderemos lo antes posible.
         </p>
-        <button id="contact-confirmation-close" class="btn btn-primary">
+        <button class="btn btn-primary" data-i18n="home.confirmation.close" id="contact-confirmation-close">
             Volver al sitio
         </button>
     </div>

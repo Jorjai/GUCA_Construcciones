@@ -1,50 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <title>Solicitud enviada | Suministros GUCA</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Tu solicitud de suministros fue enviada correctamente." />
-    <link rel="stylesheet" href="css/styles.css" />
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+    <meta charset="utf-8"/>
+    <title data-i18n="success.supplyTitle">Solicitud enviada | Suministros GUCA</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="Tu solicitud de suministros fue enviada correctamente." data-i18n-content="success.supplyDescription" name="description"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 </head>
-
 <body>
 <header>
     <div class="container nav-bar">
-        <a class="logo logo-link" href="index.html" aria-label="Volver al inicio">
-            <img src="assets/logo-placeholder.png" alt="Logo GUCA Construcciones" />
+        <a aria-label="Volver al inicio" class="logo logo-link" href="index.html">
+            <img alt="Logo GUCA Construcciones" src="assets/logo-placeholder.png"/>
             <span class="logo-title">GUCA CONSTRUCCIONES</span>
         </a>
     </div>
 </header>
-
 <main>
     <section class="success-page supply-success-page">
         <div class="container success-card">
             <div class="success-icon supply-success-icon">
                 <i class="fa-solid fa-file-invoice-dollar"></i>
             </div>
-
-            <p class="success-eyebrow">Solicitud enviada</p>
-
-            <h1>¡Solicitud de suministros recibida!</h1>
-
-            <p>
+            <p class="success-eyebrow" data-i18n="success.supplyEyebrow">Solicitud enviada</p>
+            <h1 data-i18n="success.supplyHeading">¡Solicitud de suministros recibida!</h1>
+            <p data-i18n="success.supplyText">
                 Hemos recibido tu solicitud de cotización para la División Comercializadora.
                 Te contactaremos lo antes posible para confirmar disponibilidad, cantidades
                 y zona de entrega.
             </p>
-
             <div class="success-actions">
-                <a href="suministros.html" class="btn btn-primary">Volver a suministros</a>
-                <a href="index.html" class="btn btn-outline">Ir al sitio principal</a>
+                <a class="btn btn-primary" data-i18n="success.backSupplies" href="suministros.html">Volver a suministros</a>
+                <a class="btn btn-outline" data-i18n="success.mainSite" href="index.html">Ir al sitio principal</a>
             </div>
         </div>
     </section>
 </main>
-</body>
+<script defer="True" src="js_files/translations/es.js"></script><script defer="True" src="js_files/translations/en.js"></script><script defer="True" src="js_files/language.js"></script></body>
 </html>
