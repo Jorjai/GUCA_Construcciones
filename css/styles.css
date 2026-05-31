@@ -4002,3 +4002,34 @@ nav a:focus {
         left: 35px;
     }
 }
+
+/* =========================
+   Stage 3 - Admin auto translation
+   ========================= */
+
+.admin-translation-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0.85rem 0 1rem;
+}
+
+.admin-translate-btn {
+    width: fit-content;
+    min-height: 42px;
+}
+
+.admin-translate-btn:disabled {
+    opacity: 0.68;
+    cursor: wait;
+}
+
+@media (max-width: 640px) {
+    .admin-translation-actions,
+    .admin-translate-btn {
+        width: 100%;
+    }
+
+    .admin-translate-btn {
+        justify-content: center;
+    }
+}

@@ -11,6 +11,93 @@ document.addEventListener("DOMContentLoaded", async () => {
     const panelBody = document.getElementById("adminPanelBody");
     const adminStatsGrid = document.getElementById("adminStatsGrid");
 
+
+    const TRANSLATION_BUTTON_TEXT = "Traducir automáticamente al inglés";
+
+    async function translateAdminFields(fieldMap, buttonId, msgId) {
+        const button = document.getElementById(buttonId);
+        const msg = document.getElementById(msgId);
+
+        if (!button) return;
+
+        const fields = {};
+        const targetInputs = [];
+
+        fieldMap.forEach((field) => {
+            const sourceInput = document.getElementById(field.sourceId);
+            const targetInput = document.getElementById(field.targetId);
+            const sourceText = sourceInput ? sourceInput.value.trim() : "";
+
+            if (sourceText) {
+                fields[field.key] = sourceText;
+                targetInputs.push({ key: field.key, targetInput });
+            }
+        });
+
+        if (Object.keys(fields).length === 0) {
+            if (msg) {
+                msg.textContent = "Escribe primero el texto en español para poder traducirlo.";
+                msg.className = "msg error";
+            }
+            return;
+        }
+
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.textContent = "Traduciendo...";
+
+        if (msg) {
+            msg.textContent = "Generando traducción automática...";
+            msg.className = "msg";
+        }
+
+        try {
+            const { data: sessionData } = await GucaSupabase.auth.getSession();
+            const accessToken = sessionData?.session?.access_token;
+
+            if (!accessToken) {
+                throw new Error("No hay sesión activa.");
+            }
+
+            const { data, error } = await GucaSupabase.functions.invoke("translate-admin-fields", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+                body: {
+                    sourceLanguage: "es",
+                    targetLanguage: "en",
+                    fields
+                }
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            const translations = data?.translations || {};
+
+            targetInputs.forEach(({ key, targetInput }) => {
+                if (targetInput && translations[key]) {
+                    targetInput.value = translations[key];
+                }
+            });
+
+            if (msg) {
+                msg.textContent = "Traducción generada. Revisa el texto antes de guardar.";
+                msg.className = "msg success";
+            }
+        } catch (error) {
+            console.error(error);
+            if (msg) {
+                msg.textContent = "No se pudo generar la traducción automática. Puedes escribirla manualmente.";
+                msg.className = "msg error";
+            }
+        } finally {
+            button.disabled = false;
+            button.textContent = originalText || TRANSLATION_BUTTON_TEXT;
+        }
+    }
+
     if (year) {
         year.textContent = new Date().getFullYear();
     }
@@ -945,6 +1032,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <hr class="login-divider" />
                 <p class="login-note"><strong>Traducción en inglés</strong> (opcional). Si se deja vacío, el sitio mostrará el texto en español.</p>
 
+                <div class="admin-translation-actions">
+                    <button type="button" class="btn btn-outline admin-translate-btn" id="translateServiceBtn">
+                        Traducir automáticamente al inglés
+                    </button>
+                </div>
+
                 <div class="field">
                     <label for="servicePillEn">Etiqueta en inglés</label>
                     <input
@@ -1012,6 +1105,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document.getElementById("cancelServiceEdit").addEventListener("click", () => {
             showAdminSection("services");
+        });
+
+        document.getElementById("translateServiceBtn").addEventListener("click", () => {
+            translateAdminFields([
+                { key: "pill", sourceId: "servicePill", targetId: "servicePillEn" },
+                { key: "title", sourceId: "serviceTitle", targetId: "serviceTitleEn" },
+                { key: "description", sourceId: "serviceDescription", targetId: "serviceDescriptionEn" }
+            ], "translateServiceBtn", "serviceFormMsg");
         });
 
         document.getElementById("serviceAdminForm").addEventListener("submit", async (event) => {
@@ -1225,6 +1326,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             <hr class="login-divider" />
             <p class="login-note"><strong>Traducción en inglés</strong> (opcional). Si se deja vacío, el sitio mostrará el texto en español.</p>
 
+            <div class="admin-translation-actions">
+                <button type="button" class="btn btn-outline admin-translate-btn" id="translateCategoryBtn">
+                    Traducir automáticamente al inglés
+                </button>
+            </div>
+
             <div class="field">
                 <label for="categoryNameEn">Nombre visible en inglés</label>
                 <input
@@ -1297,6 +1404,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             showAdminSection("categories");
         });
 
+        document.getElementById("translateCategoryBtn").addEventListener("click", () => {
+            translateAdminFields([
+                { key: "name", sourceId: "categoryName", targetId: "categoryNameEn" },
+                { key: "description", sourceId: "categoryDescription", targetId: "categoryDescriptionEn" }
+            ], "translateCategoryBtn", "categoryFormMsg");
+        });
+
         document.getElementById("categoryAdminForm").addEventListener("submit", async (event) => {
             event.preventDefault();
 
@@ -1331,6 +1445,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     .update({
                         name: payload.name,
                         description: payload.description,
+                        name_en: payload.name_en,
+                        description_en: payload.description_en,
                         icon: payload.icon,
                         display_order: payload.display_order,
                         is_active: payload.is_active
@@ -1840,6 +1956,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             <hr class="login-divider" />
             <p class="login-note"><strong>Traducción en inglés</strong> (opcional). Si se deja vacío, el sitio mostrará el texto en español.</p>
 
+            <div class="admin-translation-actions">
+                <button type="button" class="btn btn-outline admin-translate-btn" id="translateInventoryBtn">
+                    Traducir automáticamente al inglés
+                </button>
+            </div>
+
             <div class="field">
                 <label for="inventoryNameEn">Nombre en inglés</label>
                 <input
@@ -1960,6 +2082,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             showAdminSection("inventory");
         });
 
+        document.getElementById("translateInventoryBtn").addEventListener("click", () => {
+            translateAdminFields([
+                { key: "name", sourceId: "inventoryName", targetId: "inventoryNameEn" },
+                { key: "type", sourceId: "inventoryType", targetId: "inventoryTypeEn" },
+                { key: "description", sourceId: "inventoryDescription", targetId: "inventoryDescriptionEn" },
+                { key: "unit", sourceId: "inventoryUnit", targetId: "inventoryUnitEn" },
+                { key: "status", sourceId: "inventoryStatusInput", targetId: "inventoryStatusEn" }
+            ], "translateInventoryBtn", "inventoryFormMsg");
+        });
+
         const inventoryImageUrlInput = document.getElementById("inventoryImageUrl");
         const inventoryImagePreview = document.getElementById("inventoryImagePreview");
 
@@ -2075,6 +2207,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 category_slug: document.getElementById("inventoryCategory").value,
                 type: document.getElementById("inventoryType").value.trim() || "General",
                 description: document.getElementById("inventoryDescription").value.trim(),
+                name_en: document.getElementById("inventoryNameEn").value.trim() || null,
+                type_en: document.getElementById("inventoryTypeEn").value.trim() || null,
+                description_en: document.getElementById("inventoryDescriptionEn").value.trim() || null,
+                unit_en: document.getElementById("inventoryUnitEn").value.trim() || null,
+                status_en: document.getElementById("inventoryStatusEn").value.trim() || null,
                 price: rawPrice === "" ? null : Number(rawPrice),
                 unit: document.getElementById("inventoryUnit").value.trim() || "pieza",
                 status: document.getElementById("inventoryStatusInput").value.trim() || "Cotizable",
@@ -2316,6 +2453,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             <hr class="login-divider" />
             <p class="login-note"><strong>Traducción en inglés</strong> (opcional). Si se deja vacío, el sitio mostrará el texto en español.</p>
 
+            <div class="admin-translation-actions">
+                <button type="button" class="btn btn-outline admin-translate-btn" id="translateProjectBtn">
+                    Traducir automáticamente al inglés
+                </button>
+            </div>
+
             <div class="field">
                 <label for="projectCategoryEn">Categoría en inglés</label>
                 <input
@@ -2438,6 +2581,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         document.getElementById("cancelProjectEdit").addEventListener("click", () => {
             showAdminSection("projects");
+        });
+
+        document.getElementById("translateProjectBtn").addEventListener("click", () => {
+            translateAdminFields([
+                { key: "category", sourceId: "projectCategory", targetId: "projectCategoryEn" },
+                { key: "title", sourceId: "projectTitle", targetId: "projectTitleEn" },
+                { key: "description", sourceId: "projectDescription", targetId: "projectDescriptionEn" },
+                { key: "client", sourceId: "projectClient", targetId: "projectClientEn" },
+                { key: "alt", sourceId: "projectAlt", targetId: "projectAltEn" }
+            ], "translateProjectBtn", "projectFormMsg");
         });
 
         const projectGalleryInput = document.getElementById("projectGallery");
